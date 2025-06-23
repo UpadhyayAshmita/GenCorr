@@ -22,8 +22,9 @@ Here comes the end of the complete model, where all dataset is being throughout 
 We did the 20:80 approach as mentioned in the flowchart below:
 ![image](https://github.com/user-attachments/assets/bef1817e-c94c-423e-aa3b-db033f689d92)
 
-- The sampling, i.e, random selection of the lines from the total line, was done using a script https://github.com/UpadhyayAshmita/GenCorr/blob/master/scripts/sampling_rep.R where we can 5 sets of phenotypes for downstream analysis. Each randomly selected line is treated as a replication. 
-- Now, within each replicatio,n we selected three synthetic traits for each target trait, estimated the BLUEs for the selected synthetic traits and target traits similar to earlier complete approach and the pre-processing, selection of synthetic traits and then estimation of all 5 replication for 4 different traits can be found in the folder Replication folder with each traits R scripts.
+- The sampling, i.e, random selection of the lines from the total line, was done using a script https://github.com/UpadhyayAshmita/GenCorr/blob/master/scripts/sampling_rep.R, where we can select 5 sets of phenotypes for downstream analysis. Each randomly selected line is treated as a replication. 
+- Now, within each replication we selected three synthetic traits for each target trait, estimated the BLUEs for the selected synthetic traits and target traits similar to earlier complete approach and the pre-processing, selection of synthetic traits and then estimation of all 5 replication for 4 different traits can be found in the folder Replication folder with each traits R scripts.
+- 
   
   
 
