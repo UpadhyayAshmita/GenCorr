@@ -19,9 +19,12 @@ scripts inside the coh2 folder in the scripts.
 https://github.com/UpadhyayAshmita/GenCorr/blob/master/scripts/second_stage.R . The second stage has three cross validation scheme i.e CV1, CV2, and single-trait for each target trait. The script includes all three scheme for four targets traits. We can obtain the accuracy and genomic estimated-breeding values for all genotypes as the output from this stage.
 
 Here comes the end of the complete model, where all dataset is being throughout the steps.
-We did 20:80 approach as mentioned where randomly one 
+We did the 20:80 approach as mentioned in the flowchart below:
 ![image](https://github.com/user-attachments/assets/bef1817e-c94c-423e-aa3b-db033f689d92)
 
-
+- The sampling, i.e, random selection of the lines from the total line, was done using a script https://github.com/UpadhyayAshmita/GenCorr/blob/master/scripts/sampling_rep.R where we can 5 sets of phenotypes for downstream analysis. Each randomly selected line is treated as a replication. 
+- Now, within each replicatio,n we selected three synthetic traits for each target trait, estimated the BLUEs for the selected synthetic traits and target traits similar to earlier complete approach and the pre-processing, selection of synthetic traits and then estimation of all 5 replication for 4 different traits can be found in the folder Replication folder with each traits R scripts.
+  
+  
 
 - 
