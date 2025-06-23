@@ -13,12 +13,15 @@ https://github.com/UpadhyayAshmita/GenCorr/blob/master/scripts/coh2_scripts/coh2
 for all four main target traits.
 - We can obtain the breakdown data for each trait using the Python scripts https://github.com/UpadhyayAshmita/GenCorr/blob/master/scripts/coh2_scripts/combine.ipynb
 scripts inside the coh2 folder in the scripts.
-- From breakdown data, we can select the synthetic trait/ wave-ratios and get the phenotypic data of the target traits and the steps can be followed using the scripts in the
-  pre-processing scripts in the scripts scripts/pre-processing.R
-  also we can get the heatmaps using the scripts in the pre-processing scripts.
-- 
--  
-- 
-- Then, we can go for genomic prediction where we can follow two steps model and this steps can be performed using the scripts from the 
+- From breakdown data, we can select the synthetic trait/ wave-ratios and get the phenotypic data of the target traits and the steps can be followed using the scripts in the pre-processing scripts in the scripts https://github.com/UpadhyayAshmita/GenCorr/blob/master/scripts/pre-processing.R. Also we can get the heatmaps using the scripts in the pre-processing scripts.
+- After selecting three synthetic traits and getting their phenotype value, we run the script https://github.com/UpadhyayAshmita/GenCorr/blob/master/scripts/model_fit.R , in this script we first get our kinship matrix from the genotype data we have for the sorghum diversity pannel. Then we will fit the first stage model, i.e., we will get the BLUEs of the synthetic traits and target traits, respectively.
+- After getting the BLUEs from the synthetic and target traits, we move forward to the second stage of the model, i.e., getting the predicted value of the genotypes. This second stage can be performed using the script below inside the folder,
+https://github.com/UpadhyayAshmita/GenCorr/blob/master/scripts/second_stage.R . The second stage has three cross validation scheme i.e CV1, CV2, and single-trait for each target trait. The script includes all three scheme for four targets traits. We can obtain the accuracy and genomic estimated-breeding values for all genotypes as the output from this stage.
+
+Here comes the end of the complete model, where all dataset is being throughout the steps.
+We did 20:80 approach as mentioned where randomly one 
+![image](https://github.com/user-attachments/assets/bef1817e-c94c-423e-aa3b-db033f689d92)
+
+
 
 - 
