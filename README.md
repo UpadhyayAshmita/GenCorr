@@ -8,7 +8,7 @@ This repository contains all the scripts and data used for the GenCorr project.
 trait of interest data.
 
 ## Methodology
--The first step is to calculate the co-heritability, which can be done using the bash script and R script located in the co-heritability folder within the scripts.
+- The first step is to calculate the co-heritability, which can be done using the bash script and R script located in the co-heritability folder within the scripts.
 https://github.com/UpadhyayAshmita/GenCorr/blob/master/scripts/coh2_scripts/coh2_block.R 
 for all four main target traits.
 - We can obtain the breakdown data for each trait using the Python scripts https://github.com/UpadhyayAshmita/GenCorr/blob/master/scripts/coh2_scripts/combine.ipynb
