@@ -19,7 +19,7 @@ scripts inside the coh2 folder in the scripts.
 https://github.com/UpadhyayAshmita/GenCorr/blob/master/scripts/second_stage.R . The second stage has three cross validation scheme i.e CV1, CV2, and single-trait for each target trait. The script includes all three scheme for four targets traits. We can obtain the accuracy and genomic estimated-breeding values for all genotypes as the output from this stage. (To submit a job faster, we can find scripts inside completemodel_parallel which let us submit CV1, CV2 for all three synthetic traits at the same time for four target traits and also we have efmw and mwef scenarios too inside the folder)
 
 Here comes the end of the complete model, where all dataset is being processed throughout the steps.
-##20:80 approach
+## 20:80 approach
 We did the 20:80 approach as mentioned in the flowchart below:
 ![image](https://github.com/user-attachments/assets/bef1817e-c94c-423e-aa3b-db033f689d92)
 
