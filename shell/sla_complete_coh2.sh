@@ -3,6 +3,7 @@
 #SBATCH --partition=condo
 #SBATCH --constraint=samuelbf
 #SBATCH --account=samuelbf
+#SBATCH --qos=condo
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=32
