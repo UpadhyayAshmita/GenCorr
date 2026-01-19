@@ -2,6 +2,7 @@
 #SBATCH --job-name=sla_coh2_complete
 #SBATCH --partition=condo
 #SBATCH --constraint=samuelbf
+#SBATCH --account=samuelbf
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=32
