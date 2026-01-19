@@ -1,11 +1,11 @@
 #!/bin/bash
 #SBATCH --job-name=sla_coh2_complete
 #SBATCH --partition=condo
-#SBATCH --account=samuelbf
+#SBATCH --constraint=samuelbf
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=32
-#SBATCH --mem=128G
+#SBATCH --mem=0
 #SBATCH --time=72:00:00
 #SBATCH --output=logs/sla_coh2_%j.out
 #SBATCH --error=logs/sla_coh2_%j.err
