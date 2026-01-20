@@ -4,7 +4,6 @@
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=1
 #SBATCH --qos comp
-#SBATCH --mem=125GB
 #SBATCH --tasks-per-node=32
 #SBATCH --time=72:00:00
 #SBATCH --output=logs/sla_coh2_%j.out

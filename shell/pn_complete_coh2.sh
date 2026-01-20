@@ -5,10 +5,9 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --qos comp
 #SBATCH --tasks-per-node=32
-#SBATCH --mem=125GB
 #SBATCH --time=72:00:00
-#SBATCH --output=logs/narea_coh2_%j.out
-#SBATCH --error=logs/narea_coh2_%j.err
+#SBATCH --output=logs/pn_coh2_%j.out
+#SBATCH --error=logs/pn_coh2_%j.err
 
 
 
