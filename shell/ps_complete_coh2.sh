@@ -5,7 +5,7 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --qos comp
 #SBATCH --tasks-per-node=32
-#SBATCH --mem=125GB
+#SBATCH --mem=96GB
 #SBATCH --time=72:00:00
 #SBATCH --output=logs/ps_coh2_%j.out
 #SBATCH --error=logs/ps_coh2_%j.err
