@@ -4,6 +4,7 @@
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=1
 #SBATCH --qos comp
+#SBATCH --mem=196GB
 #SBATCH --tasks-per-node=32
 #SBATCH --time=72:00:00
 #SBATCH --output=logs/narea_coh2_%j.out
