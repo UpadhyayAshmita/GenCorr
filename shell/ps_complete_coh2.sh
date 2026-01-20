@@ -3,7 +3,6 @@
 #SBATCH --partition=comp72
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=1
-#SBATCH --qos comp
 #SBATCH --tasks-per-node=32
 #SBATCH --mem=96GB
 #SBATCH --time=72:00:00
