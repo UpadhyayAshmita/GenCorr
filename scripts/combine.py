@@ -32,7 +32,7 @@ for trait in traits:
         end = ((i + 1) * 43) + 350
         shift = 350 #index shift
 
-        file_name = f"./output_Complete/{trait}_{start}_{end}.csv"
+        file_name = f"./output_complete/{trait}_{start}_{end}.csv"
         df = pd.read_csv(file_name, header=None, sep=" ", index_col=False, names=columns)
         df_list.append(df)
 
