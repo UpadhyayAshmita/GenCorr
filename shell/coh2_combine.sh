@@ -3,7 +3,6 @@
 #SBATCH --partition=tres72
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=1
-#SBATCH --qos comp
 #SBATCH --tasks-per-node=32
 #SBATCH --time=1:00:00
 #SBATCH --output=logs/combine_coh2_%j.out
