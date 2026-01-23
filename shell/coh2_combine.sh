@@ -15,12 +15,7 @@ mkdir -p logs
 module purge
 module load python/3.9.15
 
-echo "HOST=$(hostname)"
-echo "PWD=$(pwd)"
 which python
 python -V
-
-# confirm files exist
-ls -lh output_complete | head
 
 python scripts/combine.py
