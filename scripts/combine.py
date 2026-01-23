@@ -1,7 +1,6 @@
 #This file can be used to aggregate coheritability runs from multiple workers
 
 import pandas as pd 
-import torch 
 import math
 
 # trait = "sla" # "narea", "sla", "pn", "ps"
