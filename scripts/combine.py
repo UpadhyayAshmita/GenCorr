@@ -2,9 +2,10 @@
 
 import pandas as pd 
 import math
+import torch
 
 # trait = "sla" # "narea", "sla", "pn", "ps"
-# trait = "narea"
+trait = "narea"
 # trait = "pn"
 # trait = "ps"
 
