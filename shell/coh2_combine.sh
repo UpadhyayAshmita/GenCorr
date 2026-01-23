@@ -2,9 +2,9 @@
 #SBATCH --job-name=coh2_combine
 #SBATCH --output=logs/%x_%j.out
 #SBATCH --error=logs/%x_%j.err
-#SBATCH --partition=tres72
+#SBATCH --partition=cloud72
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=2
+#SBATCH --cpus-per-task=1
 #SBATCH --time=01:00:00
 
 set -euo pipefail
