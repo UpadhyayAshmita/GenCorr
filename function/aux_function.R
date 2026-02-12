@@ -58,7 +58,7 @@ crossv <- function(sort,
       # ---------------------fitting model---------------------
 
       model <- asreml(
-        fixed = get(mytrait) ~ 1,
+        fixed = as.formula(paste0(mytrait, " ~ 1")),
         random =  ~ vm(taxa,source = kin, singG= "NSD" ),
         data = test, na.action = na.method(x = "include"),
         predict = predict.asreml(classify = "taxa"))

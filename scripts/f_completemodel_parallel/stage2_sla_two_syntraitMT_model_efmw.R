@@ -7,6 +7,8 @@ library(cvTools)
 kin <- fread('./data/kin_additive.txt', data.table = FALSE)
 rownames(kin) <- colnames(kin)
 kin <- as.matrix(kin)
+GINV<- readRDS("./data/kin_common_ids.rds")
+dim(GINV)
 
 # Function to create folds
 create_folds <- function(individuals, nfolds, reps, seed = 123) {
@@ -58,11 +60,11 @@ fixed_fml <- as.formula(paste0("cbind(sla, ", w1_col, ", ", w2_col, ") ~ trait")
 
 fit <- asreml(
   fixed     = fixed_fml,
-  random    = ~ diag(trait):vm(taxa, source = kin, singG = "NSD"),
+  random    = ~ corgh(trait):vm(taxa, source = kin, singG = "NSD"),
   residual  = ~ units:corgh(trait),
   data      = test,
   na.action = na.method(x = "include", y = "include"),
-  workspace = 2e9   # 2 GB
+  workspace = 2e9,
 )
 
 # predict taxa effects
@@ -80,3 +82,11 @@ raS <- pr |>
 
 cor(raS$pred, raS$obs, use = "complete.obs")
 
+
+#from Samuel
+asreml.options(workspace = "1200mb",
+               pworkspace = "600mb",
+               maxit = 100,keep.order = TRUE,
+               na.action = na.method(y = "include",
+                                     x = "omit"))
+# ====================================================
