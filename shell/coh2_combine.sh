@@ -18,4 +18,4 @@ module load python/3.9.15
 which python
 python -V
 
-python scripts/combine.py
+python scripts/c1_combine.py
