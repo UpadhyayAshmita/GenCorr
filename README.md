@@ -29,7 +29,7 @@ Run through an interactive R session
 srun --partition=batch --ntasks=1 --cpus-per-task=32 --mem=164G --time=5:00:00 --pty bash
 ```
 ```
-./scripts/a_sampling_rep.R 
+source(./scripts/a_sampling_rep.R)
 ```
 ## Coheritability ratios generation for the complete dataset and replication 1-5 datasets
 All six R scripts are available in the ./scripts/b_coh2_scripts/ inside the script dir, which can be run usinga  shell script
@@ -39,31 +39,34 @@ sbatch shell/coh2_block.sh
 You can change the R script you call inside the shell script and run the complete model and replication dataset for the subset model
 You can get the coheritability breakdown dataset for the four target traits in complete and replicated scenarios by running the .py script from the compute node in HPC 
 ```
-python ./scripts/c_combine.py
+source(./scripts/c_combine.py)
 ```
 ## Pre-processing 
-For this, you would need to get into the  compute node and an R session with R() in HPC and run the 
+For this, you would need to get into the  compute node and an R session with R() in HPC and run the script below:
 ```
-./scripts/c2_rerun_preprocessing.R
+source(./scripts/c2_rerun_preprocessing.R)
 ```
 You will have all three wave-ratios selected and the necessary output for four target traits by running this prep-processing step to run the further step.
 ## Calculating BLUES and Heritability of synthetic trait/ selected wave ratios and each target trait in EF and MW locations
 Again, you would need to run this in an interactive session in R
 ```
-./scripts/d_rerun_modelfit.R
+source(./scripts/d_rerun_modelfit.R)
 ```
 ## Single-trait second stage model for all four target traits 
 ```
-./scripts/e_run_singletraits_cv_completemodel.R
+source(./scripts/e_run_singletraits_cv_completemodel.R)
 ```
 R script for calculating the accuracy and GebV of the single-trait for the complete model is listed above, using the below-listed bash script, which is modified for each target trait sla, narea, plsr-sla, plsr-narea, and can run the e_run_singletraits_cv_completemodel.R script
 ```
 sbatch ./shell/st_cv_array.sh
 ```
 ## Multi-trait second stage model for all four target traits
-R scripts for each trait can be found inside the scripts dir, and can be submitted through a bash script for each trait, which includes both CV1 and CV2 calculation
+R scripts for each trait can be found inside the scripts/f_completemodel_parallel/ dir, and can be submitted through a bash script for each trait, which includes both CV1 and CV2 calculation
 ```
-./scripts/f_completemodel_parallel/
+source (./scripts/f_completemodel_parallel/rerun_narea_completemodel_efmw.R)
+source (./scripts/f_completemodel_parallel/rerun_sla_completemodel_efmw.R)
+source(./scripts/f_completemodel_parallel/rerun_ps_completemodel_efmw.R)
+source( ./scripts/f_completemodel_parallel/rerun_ps_completemodel_efmw.R)
 ```
 bash script for submitting the R scripts above 
 ```
