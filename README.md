@@ -105,7 +105,7 @@ Now, for selecting the three synthetic traits for each target trait in each rep,
 
 # Pre-processing
 
-You can run the function for narea first to get the pre-processing output for all 1-5 reps
+You need to call the function first to get the pre-processing output for all 1-5 reps, and you can run it in an interactive compute node in HPC
 ```
 source(./function/aux_function.R)
 nareapreprocessing_allrep <- function(rep_id,  # while calling script change your rep_id=1 to 5 to get all rep pre-processing output
