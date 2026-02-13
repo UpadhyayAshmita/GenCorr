@@ -73,7 +73,7 @@ bash script for submitting the R scripts above
 sbatch ./shell/run_stage2_narea.sh
 ```
 ## Selecting the synthetic trait with the lowest Coheritability 
-Here again, for the pre-processing step and selecting the synthetic trait with the lowest coheritability, we need to run an interactive R session in HPC; it does need good memory and space because of all the clustering we do
+Here again, for the pre-processing step and selecting the synthetic trait with the lowest coheritability, we need to run an interactive R session in HPC; it does need good memory and space because of the clustering work we do to select the trait
 
 ```
 ./scripts/g_lowest_coh2/g_1_lowcoh2_preprocessingalltrait.R
@@ -101,3 +101,17 @@ Again, all the graphs and plots in the result section were generated using the R
 ```
 
 ### Replication 1-5 
+Now, for selecting the three synthetic traits for each target trait in each rep, and to get BLUEs from the  first stage, and GEBV and accuracy from the second stage we have the following steps:
+
+# Pre-processing
+
+You can run the function for narea first to get the pre-processing output for all 1-5 reps
+```
+source(./function/run_nareapreprocessing_allrep.R)
+run_nareapreprocessing_allrep <- function(rep_id,
+                    breakdown_dir = "./output",
+                    phenotypes_path = "./data/phenotypes_whole.csv",
+                    sample_path = "./data/sample_per_rep.csv",
+                    out_dir = "./output",
+                    k_groups = 3) #if you want to change your path and file name for input & output dir, change likewise
+```
