@@ -1,8 +1,8 @@
 ## How to reproduce the results
-- High-performance computing with high memory and enough to submit the job as per the memory and resource allocated in a bash script in shell dir
-- Also, some interactive R session is necessary to pre-process the data
+- High-performance computing with high memory and enough to submit the job as per the memory and resource allocated in a bash script in the shell directory
+- Also, some interactive R sessions are necessary to pre-process the data and get some output for serial computing in several steps
 ## Clone the dir and create this dir structure 
-- After cloning the dir, phenotypic data, which is available in _ needs to be downloaded and put it inside data dir along with the genmoic data, which is also available here _, and Names_WEST_SF.csv data for filtering later on the steps needs to be downloaded.
+- After cloning the dir, phenotypic data, which is available in _ needs to be downloaded and put inside the data dir along with the genomic data, which is also available here _, and Names_WEST_SF.csv data for filtering later on the steps needs to be downloaded.
 - Dir structure should be like this:
 ```
 GenCorr/
@@ -10,7 +10,7 @@ GenCorr/
 ├── figure/                  #for result figure 
 ├── function/                #custom functions
 ├── logs/                    #for checking job logs
-├── output/                  #for output of pre-processing, first stage and second stage model
+├── output/                  #for output of pre-processing, first stage, and second stage model
 ├── output_complete/         #for coh2_block complete model output 
 ├── output1/                 #coh2_block replication 1 for subset 1 output
 ├── output2/                 #coh2_block replication 2 for subset 2 output
@@ -97,3 +97,4 @@ Again, all the graphs and plots in the result section were generated using the R
 ./scripts/h_rerun_plot.R
 ```
 
+### Replication 1-5 
