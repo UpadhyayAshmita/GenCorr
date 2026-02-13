@@ -107,11 +107,39 @@ Now, for selecting the three synthetic traits for each target trait in each rep,
 
 You can run the function for narea first to get the pre-processing output for all 1-5 reps
 ```
-source(./function/run_nareapreprocessing_allrep.R)
-run_nareapreprocessing_allrep <- function(rep_id,
+source(./function/aux_function.R)
+nareapreprocessing_allrep <- function(rep_id,  # while calling script change your rep_id=1 to 5 to get all rep pre-processing output
                     breakdown_dir = "./output",
                     phenotypes_path = "./data/phenotypes_whole.csv",
                     sample_path = "./data/sample_per_rep.csv",
                     out_dir = "./output",
                     k_groups = 3) #if you want to change your path and file name for input & output dir, change likewise
 ```
+
+```
+slapreprocessing_allrep<- function(rep_id,
+                        breakdown_dir = "./output",
+                        phenotypes_path = "./data/phenotypes_whole.csv",
+                        sample_path = "./data/sample_per_rep.csv",
+                        out_dir = "./output",
+                        k_groups = 3)
+```
+```
+pnpreprocessing_allrep <- function(rep_id,
+                       breakdown_dir = "./output",
+                       phenotypes_path = "./data/phenotypes_whole.csv",
+                       sample_path = "./data/sample_per_rep.csv",
+                       out_dir = "./output",
+                       k_groups = 3,
+                       pn_trait_col = "fs_plsr_narea")
+```
+```
+pspreprocessing_allrep <- function(rep_id,
+                       breakdown_dir = "./output",
+                       phenotypes_path = "./data/phenotypes_whole.csv",
+                       sample_path = "./data/sample_per_rep.csv",
+                       out_dir = "./output",
+                       k_groups = 3,
+                       ps_trait_col = "plsr_sla_sorghum")
+```
+
