@@ -42,12 +42,6 @@ N <- N |>
 sum(is.na(N$corg))
 ntraits <- ceiling(sum(!is.na(N$coh2))*0.01)
 
-# Calculate the wave ratio for the single row in 'sel'
-#wave_ratio_name <- paste0("wave$", lowest_ntraits$wave_1, "_", lowest_ntraits$wave_2)
-#assign(wave_ratio_name, wave[[lowest_ntraits$wave_1]] / wave[[lowest_ntraits$wave_2]])
-
-#lowest_ntraits$rowname <- paste0(lowest_ntraits$wave_1, "_", lowest_ntraits$wave_2)
-#Nratio_low <- wave |> select(wave_524_wave_681)
 
 sel <- N |> slice_max(coh2, n=ntraits) |>
   mutate(across(where(is.double), \(x) round(x, 4)))
@@ -98,33 +92,6 @@ com_col <- colnames(wave)[colnames(wave) %in% Nratio_transform$wave_sel]
 Nwave_pheno<- wave %>% select(1:10, com_col)
 write.csv(Nwave_pheno,"./output/Nwave_pheno_rep1.csv", row.names = F)
 Nwave<- read.csv("./output/Nwave_pheno_rep1.csv")
-#plotting
-
-l <- Nratio_transform |>
-  mutate(wave_1 = as.numeric(gsub("_.*", "",gsub("wave_","", wave_1))),
-         wave_2 = as.numeric(gsub(".*_","", wave_2))) |> ungroup() |>
-  select(wave_1, wave_2) |> mutate(label = "*") |> as.data.frame()
-
-# gg <- N |>
-#   ggplot(aes(x = wave_1, y = wave_2, fill = coh2)) +
-#   geom_tile() +
-#   scale_fill_gradient(low = "white", high = "red",na.value="black") +
-#   labs(x = "Wave2", y = "Wave1", title = "Co-h2") +
-#   geom_label(data = l, aes(label = label))
-
-heatmap_rep1 <-N |> mutate(wave_1 = as.numeric(gsub("wave_","", wave_1)),
-                  wave_2 = as.numeric(gsub("wave_","", wave_2))) |>
-  ggplot(aes(x = wave_1, y = wave_2)) +
-  geom_tile(aes(fill = coh2)) +
-  scale_fill_gradient(low = "white", high = "red",na.value="black") +
-  labs(x = "Wave2", y = "Wave1", title = "Coh2-Replictaion1") +
-  # scale_x_continuous(limits = c(350, 2500)) +
-  # scale_y_continuous(limits = c(350, 2500)) +
-  geom_label(data = l, aes(label = label))+
-  theme_minimal()
-
-ggsave(plot=heatmap_rep1,"./figure/Heatmap_rep1.jpeg")
-
 
 #replication 2
 N <- fread("./output/narea_breakdown2.csv", data.table = F)
@@ -1035,34 +1002,6 @@ result_N_rep5 <-
 
 corr_N_MWEF<- data.frame(result_N_rep5$ac)
 fwrite(corr_N_MWEF, "./output/narea/corr_N_MWEFrep5.csv")
-
-#obtaining synthetic trait table and value in each rep
-Nratio_combined <- read.csv("./data/Nratio_combined.csv", header = TRUE) %>% select(-3)
-Nratio_combined$ST <- rep(c("ST1", "ST2", "ST3"), times = 5)
-Nratio_combined$Rep <- rep(1:5, each = 3)
-Nratio_combined<- Nratio_combined %>% select(-wave_1, -wave_2)
-Nratio_combined$coh2_Rep1<- c(0.63,0.63,0.63,0.63,0.43,0.54,0.62,0.48,0.56,0.63,0.61,NA,0.32,0.54,0.62)
-Nratio_combined$coh2_Rep2<- c(0.55,NA,NA,0.66,0.58,0.59,NA,NA,NA,NA,0.52,NA,0.40,NA,NA)
-Nratio_combined$coh2_Rep3<- c(0.46,0.56,0.44,0.64,0.47,0.59,0.52,0.56,0.51,0.55,0.47,0.32,0.49,0.43,0.55)
-Nratio_combined$coh2_Rep4<- c(0.46,0.51,0.50,0.55,0.35,0.32,0.48,0.32,0.36,0.50,0.49,0.52,0.28,0.22,0.53)
-Nratio_combined$coh2_Rep5<- c(0.34,0.46,0.42,0.55,0.40,0.48,0.43,0.42,0.54,0.45,0.39,0.31,0.48,0.48,0.49)
-
-gt_table <- gt(Nratio_combined)
-# Apply the yellow highlighting
-for (i in 1:5) {
-  column_name <- paste0("coh2_Rep", i)
-  gt_table <- gt_table %>%
-    tab_style(
-      style = cell_fill(color = "yellow"),
-      locations = cells_body(
-        columns = column_name,
-        rows = Rep == i
-      )
-    )
-}
-htmltools::save_html(gt_table, file = "coh2_all_Narea_rep.html")
-webshot("coh2_all_Narea_rep.html", "./figure/coh2_all_Narea_rep.png")
-
 
 #selecting synthetic trait that has lowest coh2 i.e 0 and using it to fit the model
 
