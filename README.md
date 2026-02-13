@@ -56,8 +56,40 @@ Again, you would need to run this in an interactive session in R
 ```
 ./scripts/e_run_singletraits_cv_completemodel.R
 ```
-R script for calculating the accuracy and GebV of the single-trait for the complete model is listed above, using the below-listed bash script, which is modified for each target trait sla, narea, plsr-sla, plsr-narea can run the e_run_singletraits_cv_completemodel.R script
+R script for calculating the accuracy and GebV of the single-trait for the complete model is listed above, using the below-listed bash script, which is modified for each target trait sla, narea, plsr-sla, plsr-narea, and can run the e_run_singletraits_cv_completemodel.R script
 ```
 sbatch ./shell/st_cv_array.sh
 ```
+## Multi-trait second stage model for all four target traits
+R scripts for each trait can be found inside the scripts dir, and can be submitted through a bash script for each trait, which includes both CV1 and CV2 calculation
+```
+./scripts/f_completemodel_parallel/
+```
+bash script for submitting the R scripts above 
+```
+sbatch ./shell/run_stage2_narea.sh
+```
+## Selecting the synthetic trait with the lowest Coheritability 
+Here again, for the pre-processing step and selecting the synthetic trait with the lowest coheritability, we need to run an interactive R session in HPC; it does need good memory and space because of all the clustering we do
+
+```
+./scripts/g_lowest_coh2/g_1_lowcoh2_preprocessingalltrait.R
+```
+Then, to fit the MT model with the lowest synthetic trait selected, you can submit the R script in the ./scripts/g_lowest_coh2/ dir using the below-mentioned bash scripts
+
+```
+sbatch ./shell/run_stage2_NT_lowcoh2.sh
+```
+There are other bash scripts already in the shell script that you can reuse if you dont like to change the wave_ratio value and R script to call everytime in bash script
+```
+sbatch ./shell/run_stage2_ST_lowcoh2.sh
+sbatch ./shell/run_stage2_pnT_lowcoh2.sh
+sbatch ./shell/run_stage2_psT_lowcoh2.sh
+```
+By this time, you should already have all the GEBV and accuracy files for the ST (single trait), MT(multi-trait), and S0 (MT model with synthetic trait's coh2=0)
+
+
+## plotting 
+
+
 
