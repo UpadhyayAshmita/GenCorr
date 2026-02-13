@@ -13,17 +13,10 @@ set -euo pipefail
 mkdir -p logs
 
 module purge
-
-# FIX: laod -> load
 module load dnnl-cpu-iomp/2023.0.0
 module load oneapi24/advisor/2023.2.0
 
-# DON'T use ia32 for this purpose (and its 32-bit). Remove it.
-# module load oneapi24/intel_ipp_ia32/2021.9.0
-
 module load R/4.3.0
-
-# Debug (helps confirm its fixed)
 module list
 echo "R path: $(which Rscript)"
 ldd "$(which R)" 2>/dev/null | grep -i -E "iomp|omp|mkl" || true
@@ -37,4 +30,4 @@ trait=${traits[$(( i % 4 ))]}
 scheme=${schemes[$(( i / 4 ))]}
 
 echo "Running trait=${trait} scheme=${scheme} on $(hostname)"
-Rscript scripts/completemodel_parallel/run_singletraits_cv.R "${trait}" "${scheme}"
+Rscript scripts/e_run_singletraits_cv_completemodel.R "${trait}" "${scheme}"

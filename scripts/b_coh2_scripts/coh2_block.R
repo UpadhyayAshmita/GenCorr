@@ -75,7 +75,7 @@ for (i in start:(end)){
     }
     if (j%%50==0){
       cat(trait, i, j, "\n", sep=",")
-      filename = paste("./output_complete/", trait, "_", start, "_", end, ".csv", sep="")
+      filename = paste("./output_rerun/", trait, "_", start, "_", end, ".csv", sep="")
       write.table(result_df, file=filename, row.names=FALSE, col.names=FALSE, append=TRUE)
       result_df <-data.frame()
     }
@@ -89,5 +89,5 @@ for (i in start:(end)){
 # View the combined data frame
 #head(result_df)
 cat(start, end, "done...\n", sep=",")
-filename = paste("./output_complete/", trait, "_", start, "_", end, ".csv", sep="")
+filename = paste("./output_rerun/", trait, "_", start, "_", end, ".csv", sep="")
 write.table(result_df, file=filename, row.names=FALSE, col.names=FALSE, append=TRUE)

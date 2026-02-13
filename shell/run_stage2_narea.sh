@@ -13,12 +13,11 @@ set -euo pipefail
 mkdir -p logs
 
 module purge
-# keep this minimal like your cloud72 jobs
 module load gcc/9.3.1 mkl/19.0.5 R/4.2.2
 
 # --- map array id -> trait_index + cv_scheme ---
 # traits you mentioned earlier:
-traits=("1511_wave_2314" "1039_wave_405" "910_wave_731")
+traits=("1511_wave_2314" "1039_wave_405" "910_wave_731") #edit your selected synthetic traits for your current run in respective trait
 schemes=("CV1" "CV2")
 
 k=$((SLURM_ARRAY_TASK_ID - 1))
@@ -33,7 +32,7 @@ echo "SLURM_JOB_ID=${SLURM_JOB_ID}  TASK=${SLURM_ARRAY_TASK_ID}"
 echo "trait_index=${trait_index} trait=${trait} cv_scheme=${cv_scheme}"
 module list
 
-# run (edit the path to your R script file)
+# run (edit the path to your R script file which you want to call here)
 Rscript scripts/completemodel_parallel/rerun_narea_completemodel_mwef.R \
   --trait "${trait}" \
   --trait_index "${trait_index}" \

@@ -41,7 +41,7 @@ for(i in 1:ntraits){
 }
 
 sel$rowname <- paste0(sel$wave_1, "_", sel$wave_2)
-Nratios <- wave |> select(wave_1640_wave_1736:wave_867_wave_730)
+Nratios <- wave |> select(wave_1640_wave_1736:wave_867_wave_730) #you can see how the first and last wave ratios are in the sel dataset
 Nratios <- t(Nratios)
 colnames(Nratios) <- wave$plot_id
 #distance
@@ -287,7 +287,7 @@ for(i in 1:ntraits){
 }
 
 sel$rowname <- paste0(sel$wave_1, "_", sel$wave_2)
-psratios <- wave |> select(wave_1726_wave_1666:wave_393_wave_779)
+psratios <- wave |> select(wave_1726_wave_1666:wave_393_wave_779) #the first and last wave ratio of sel datsaet
 psratios <- t(psratios)
 colnames(psratios) <- wave$plot_id
 #distance

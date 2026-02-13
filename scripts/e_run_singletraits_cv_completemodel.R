@@ -10,7 +10,7 @@ suppressPackageStartupMessages({
 source("./function/aux_function.R")
 
 args <- commandArgs(trailingOnly = TRUE)
-if (length(args) < 2) stop("Usage: Rscript scripts/run_st_cv_one.R <trait> <scheme>\n  trait in: narea,sla,plsr_narea,plsr_sla\n  scheme in: EFMW,MWEF")
+if (length(args) < 2) stop("Usage: Rscript scripts/e_run_singletraits_cv_completemodel.R <trait> <scheme>\n  trait in: narea,sla,plsr_narea,plsr_sla\n  scheme in: EFMW,MWEF")
 
 trait  <- args[1]
 scheme <- args[2]

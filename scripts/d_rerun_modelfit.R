@@ -14,32 +14,19 @@ source("./function/aux_function.R")
 asreml.options(workspace = "800mb",
                pworkspace = "300mb",
                maxit = 300)
-#--------- Loading vcf file for SNP data -----------
-# dt_num <- fread("./data/GBS002.pruned_numeric.txt", data.table = F)
-# dt <- t(dt_num[, -1:-5]) + 1
-# rownames(dt) <- substr(rownames(dt), 1, nchar(rownames(dt)) / 2) # fix row names
-# # create an Additive relationship matrix
-# kin_A <- Gmatrix(dt)
-# kin_A_dt <- as.data.table(kin_A)
-
 # load kinship
 kin <- fread("./data/kinship_additive.txt", data.table = FALSE)
 rownames(kin) <- colnames(kin)
 kin <- as.matrix(kin)
-
 # load phenotypes
 wave <- fread("./data/phenotypes_whole.csv", data.table = FALSE) %>% clean_names()
-
 # common IDs
 common_ids <- intersect(rownames(kin), unique(wave$taxa))
-
 # filter both
 kin  <- kin[common_ids, common_ids, drop = FALSE]
 wave <- wave[wave$taxa %in% common_ids, ]
-
 # save filtered phenotypes (cleanly)
 write.csv(wave, "./data/phenotypes_whole_filtered.csv", row.names = FALSE)
-
 # tune + invert filtered kinship
 Gb   <- G.tuneup(G = kin, bend = TRUE, eig.tol = 1e-06)$Gb
 GINV <- G.inverse(G = Gb, sparseform = TRUE)
@@ -747,32 +734,3 @@ psEF <- asreml(
 psEF<- update.asreml(psEF)
 # ---------------------calculating and storing heritability---------------------
 h2<- (1 - ((psEF$predictions$avsed["mean"] ^ 2) /(2 * summary(psEF)$varcomp["name2", "component"]))) # ps h2= 0.287 for EF location
-
-#----------------2nd step --------------------
-N_blues<- read.csv("./output/N_blues.csv")
-N_bluesEF<- N_blues %>% filter(env== "EF")
-sort<- create_folds( individuals= N_bluesEF$taxa, nfolds= 5,
-                     reps = 20, seed = 123)
-
-#for five replications  first stage analysis
-phenotypes_whole <- read.table("./data/phenotypes_whole.csv", header = T, sep = ",")
-Name2<- unique(phenotypes_whole$Name2)
-indv_sample<- read.csv("./data/indv_sample.csv")
-phenotypes<- phenotypes_whole %>% clean_names() #%>% filter(!Name2 %in% indv_sample$Rep_1) %>% clean_names()
-Nratio_transform<- read.csv("./data/Nratio_transform_rep2.csv")
-
-# Compute and append ratios for each wave pair
-for (i in 1:nrow(Nratio_transform)) {
-  wave1 <- Nratio_transform$wave_1[i]
-  wave2 <- Nratio_transform$wave_2[i]
-  if (wave1 %in% colnames(phenotypes) && wave2 %in% colnames(phenotypes)) {
-    # Calculate the ratio
-    ratio_column_name <- paste(wave1, wave2, sep = "_")
-    phenotypes[[ratio_column_name]] <- phenotypes[[wave1]] / phenotypes[[wave2]]
-  } else {
-    warning(paste("Missing columns:", wave1, "or", wave2, "in phenotypes."))
-  }
-}
-
-phenotypes<- phenotypes %>% select(-c(11:2166))
-write.csv(phenotypes,"./data/phenotypes_rep2.csv", row.names = F)
