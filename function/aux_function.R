@@ -522,6 +522,250 @@ pspreprocessing_allrep <- function(rep_id,
 }
 
 
+
+#for processing the blues and filtering the file with name west data
+process_narea_blues <- function(rep_id, kin, names_west) {
+
+  # Read EF & MW
+  NbluesEF <- read.csv(paste0("./output/NbluesEF_rep", rep_id, ".csv"))
+  NbluesMW <- read.csv(paste0("./output/NbluesMW_rep", rep_id, ".csv"))
+
+  # Combine
+  Nblues_rep <- bind_rows(
+    "EF" = NbluesEF,
+    "MW" = NbluesMW,
+    .id = "env"
+  )
+
+  # Join + mutate
+  Nblues_rep <- Nblues_rep |>
+    left_join(names_west %>% dplyr::select(name2, Corrected_names)) |>
+    mutate(
+      taxa = ifelse(
+        (name2 != Corrected_names) & grepl("PI", Corrected_names),
+        NA,
+        Corrected_names
+      )
+    )
+
+  # Filter
+  N_blues <- subset(Nblues_rep, !is.na(taxa)) |>
+    select(-name2, -Corrected_names)
+
+  N_blues <- droplevels(
+    N_blues[N_blues$taxa %in% rownames(kin), ]
+  )
+
+  # Write
+  write.csv(
+    N_blues,
+    paste0("./output/N_blues_rep", rep_id, ".csv"),
+    row.names = FALSE
+  )
+}
+
+#process the Sla blues
+process_sla_blues <- function(rep_id, kin, names_west) {
+  # Read EF & MW
+  sblues_ef <- read.csv(paste0("./output/SbluesEF_rep", rep_id, ".csv"))
+  sblues_mw <- read.csv(paste0("./output/SbluesMW_rep", rep_id, ".csv"))
+
+  # Combine
+  sblues_rep <- bind_rows(
+    EF = sblues_ef,
+    MW = sblues_mw,
+    .id = "env"
+  )
+
+  # Join + mutate (same logic)
+  sblues_rep <- sblues_rep |>
+    left_join(names_west |> dplyr::select(name2, Corrected_names)) |>
+    mutate(
+      taxa = ifelse(
+        (name2 != Corrected_names) & grepl("PI", Corrected_names),
+        NA,
+        Corrected_names
+      )
+    )
+
+  # Filter (same logic)
+  s_blues <- subset(sblues_rep, !is.na(taxa)) |>
+    select(-name2, -Corrected_names)
+
+  s_blues <- droplevels(
+    s_blues[s_blues$taxa %in% rownames(kin), ]
+  )
+
+  # Write
+  write.csv(
+    s_blues,
+    paste0("./output/S_blues_rep", rep_id, ".csv"),
+    row.names = FALSE
+  )
+
+  invisible(s_blues)
+}
+
+process_pn_blues <- function(rep_id, kin, names_west) {
+  # Read EF & MW
+  pnblues_ef <- read.csv(paste0("./output/pnbluesEF_rep", rep_id, ".csv"))
+  pnblues_mw <- read.csv(paste0("./output/pnbluesMW_rep", rep_id, ".csv"))
+
+  # Combine
+  pnblues_rep <- bind_rows(
+    EF = pnblues_ef,
+    MW = pnblues_mw,
+    .id = "env"
+  )
+
+  # Join + mutate (same logic)
+  pnblues_rep <- pnblues_rep |>
+    left_join(names_west |> dplyr::select(name2, Corrected_names)) |>
+    mutate(
+      taxa = ifelse(
+        (name2 != Corrected_names) & grepl("PI", Corrected_names),
+        NA,
+        Corrected_names
+      )
+    )
+
+  # Filter (same logic)
+  pn_blues <- subset(pnblues_rep, !is.na(taxa)) |>
+    select(-name2, -Corrected_names)
+
+  pn_blues <- droplevels(
+    pn_blues[pn_blues$taxa %in% rownames(kin), ]
+  )
+
+  # Write
+  write.csv(
+    pn_blues,
+    paste0("./output/pn_blues_rep", rep_id, ".csv"),
+    row.names = FALSE
+  )
+
+  invisible(pn_blues)
+}
+
+process_ps_blues <- function(rep_id, kin, names_west) {
+  # Read EF & MW
+  psblues_ef <- read.csv(paste0("./output/psbluesEF_rep", rep_id, ".csv"))
+  psblues_mw <- read.csv(paste0("./output/psbluesMW_rep", rep_id, ".csv"))
+
+  # Combine
+  psblues_rep <- bind_rows(
+    EF = psblues_ef,
+    MW = psblues_mw,
+    .id = "env"
+  )
+
+  # Join + mutate (same logic)
+  psblues_rep <- psblues_rep |>
+    left_join(names_west |> dplyr::select(name2, Corrected_names)) |>
+    mutate(
+      taxa = ifelse(
+        (name2 != Corrected_names) & grepl("PI", Corrected_names),
+        NA,
+        Corrected_names
+      )
+    )
+
+  # Filter (same logic)
+  ps_blues <- subset(psblues_rep, !is.na(taxa)) |>
+    select(-name2, -Corrected_names)
+
+  ps_blues <- droplevels(
+    ps_blues[ps_blues$taxa %in% rownames(kin), ]
+  )
+
+  # Write
+  write.csv(
+    ps_blues,
+    paste0("./output/ps_blues_rep", rep_id, ".csv"),
+    row.names = FALSE
+  )
+
+  invisible(ps_blues)
+}
+
+
+
+
+
+
+get_coh2_0_syntrait <- function(
+    trait_col,
+    breakdown_prefix,
+    breakdown_dir = "./output",
+    output_prefix = breakdown_prefix,
+    output_dir = "./output",
+    reps = 1:5,
+    indv_sample_path = "./data/sample_per_rep.csv",
+    phenotypes_path = "./data/phenotypes_whole.csv",
+    keep_cols = 1:9
+) {
+  phenotypes_whole <- read.table(phenotypes_path, header = TRUE, sep = ",")
+  indv_sample <- read.csv(indv_sample_path)
+
+  selected_list <- vector("list", length(reps))
+
+  for (i in seq_along(reps)) {
+    rep <- reps[i]
+    rep_col <- paste0("Rep_", rep)
+
+    breakdown_path <- file.path(breakdown_dir, paste0(breakdown_prefix, "_breakdown", rep, ".csv"))
+    out_path <- file.path(output_dir, paste0(output_prefix, "_rep", rep, "_lowcoh2.csv"))
+
+    if (!file.exists(breakdown_path)) stop("Missing file: ", breakdown_path)
+    if (!rep_col %in% names(indv_sample)) stop("Missing column in sample file: ", rep_col)
+
+    B <- data.table::fread(breakdown_path, data.table = FALSE)
+    if (!all(c("coh2", "wave_1", "wave_2") %in% names(B))) {
+      stop("Breakdown file must have columns coh2, wave_1, wave_2: ", breakdown_path)
+    }
+
+    wave <- phenotypes_whole |>
+      dplyr::filter(!(Name2 %in% indv_sample[[rep_col]])) |>
+      janitor::clean_names()
+
+    if (!trait_col %in% names(wave)) stop("Trait column not found in phenotypes: ", trait_col)
+
+    selected <- B |>
+      dplyr::mutate(
+        coh2 = as.numeric(trimws(as.character(coh2))),
+        abs_coh2 = abs(coh2)
+      ) |>
+      dplyr::slice_min(abs_coh2, n = 1, with_ties = FALSE)
+
+    selected$rep <- rep
+    selected_list[[i]] <- selected
+
+    wave_a <- janitor::make_clean_names(selected$wave_1[1])
+    wave_b <- janitor::make_clean_names(selected$wave_2[1])
+    ratio_name <- paste(wave_a, wave_b, sep = "_")
+
+    missing_wave_cols <- setdiff(c(wave_a, wave_b), names(wave))
+    if (length(missing_wave_cols) > 0) {
+      stop("Missing wave columns in phenotypes: ", paste(missing_wave_cols, collapse = ", "))
+    }
+
+    out <- wave |>
+      dplyr::select(dplyr::all_of(keep_cols), dplyr::all_of(trait_col), dplyr::all_of(c(wave_a, wave_b))) |>
+      dplyr::mutate(!!ratio_name := .data[[wave_a]] / .data[[wave_b]]) |>
+      dplyr::select(-dplyr::all_of(c(wave_a, wave_b)))
+
+    write.csv(out, out_path, row.names = FALSE)
+  }
+
+  selected_summary <- dplyr::bind_rows(selected_list) |>
+    dplyr::select(rep, wave_1, wave_2, coh2)
+
+  cat("\n===== Selected traits (coh2 closest to 0) for", breakdown_prefix, "=====\n")
+  print(selected_summary)
+
+  invisible(selected_summary)
+}
+
 #creating sort
 # ---------------------creating list with 5 fold and 20 reps----------------------
 create_folds<- function(individuals, nfolds, reps, seed = 123){
