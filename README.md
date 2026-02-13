@@ -80,16 +80,20 @@ Then, to fit the MT model with the lowest synthetic trait selected, you can subm
 ```
 sbatch ./shell/run_stage2_NT_lowcoh2.sh
 ```
-There are other bash scripts already in the shell script that you can reuse if you dont like to change the wave_ratio value and R script to call everytime in bash script
+There are other bash scripts already in the shell script that you can reuse if you don't like to change the wave_ratio value and R script to call every time in the  bash script
 ```
 sbatch ./shell/run_stage2_ST_lowcoh2.sh
 sbatch ./shell/run_stage2_pnT_lowcoh2.sh
 sbatch ./shell/run_stage2_psT_lowcoh2.sh
 ```
-By this time, you should already have all the GEBV and accuracy files for the ST (single trait), MT(multi-trait), and S0 (MT model with synthetic trait's coh2=0)
-
+By this time, you should already have all the GEBV and accuracy files for the ST (single trait), MT(multi-trait), and S0 (MT model with synthetic traits' coh2=0)
+in the complete dataset model
 
 ## plotting 
 
+Again, all the graphs and plots in the result section were generated using the R script below, which you can run interactively in R() on the compute node
 
+```
+./scripts/h_rerun_plot.R
+```
 
