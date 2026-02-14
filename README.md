@@ -124,7 +124,6 @@ slapreprocessing_allrep(rep_id,
                         out_dir = "./output",
                         k_groups = 3)
 ```
-```
 pnpreprocessing_allrep(rep_id,
                        breakdown_dir = "./output",
                        phenotypes_path = "./data/phenotypes_whole.csv",
@@ -142,4 +141,12 @@ pspreprocessing_allrep(rep_id,
                        k_groups = 3,
                        ps_trait_col = "plsr_sla_sorghum")
 ```
-
+## BLUEs /First stage model fitting for synthetic traits selected in four target trait over five reps
+There are 3 synthetic traits selected for four target in each reps + we also have synthetic trait with lowest coheritability ~ 0 selected for each target trait in each rep; 
+You can run four script below to get the output/ Blues file for all the synthetic trait mentioned above :
+```
+source("./scripts/h_replication_alltraits_preprocesstostage1/narea_allrep_stage1.R)
+source("./scripts/h_replication_alltraits_preprocesstostage1/sla_allrep_stage1.R)
+source("./scripts/h_replication_alltraits_preprocesstostage1/ps_allrep_stage1.R)
+source("./scripts/h_replication_alltraits_preprocesstostage1/pn_allrep_stage1.R)
+```
