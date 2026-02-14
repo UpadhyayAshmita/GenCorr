@@ -83,7 +83,7 @@ Then, to fit the MT model with the lowest synthetic trait selected, you can subm
 ```
 sbatch ./shell/run_stage2_NT_lowcoh2.sh
 ```
-There are other bash scripts already in the shell script that you can reuse if you don't like to change the wave_ratio value and R script to call every time in the  bash script
+There are other bash scripts already in the shell dir that you can reuse if you don't like to change the wave_ratio value and R script path to call every time in the  bash script
 ```
 sbatch ./shell/run_stage2_ST_lowcoh2.sh
 sbatch ./shell/run_stage2_pnT_lowcoh2.sh
@@ -151,3 +151,4 @@ source("./scripts/h_replication_alltraits_preprocesstostage1/sla_allrep_stage1.R
 source("./scripts/h_replication_alltraits_preprocesstostage1/ps_allrep_stage1.R)
 source("./scripts/h_replication_alltraits_preprocesstostage1/pn_allrep_stage1.R)
 ```
+## second stage model for replication 1-5 
