@@ -108,7 +108,7 @@ Now, for selecting the three synthetic traits for each target trait in each rep,
 You need to call the function first to get the pre-processing output for all 1-5 reps, and you can run it in an interactive compute node in HPC
 ```
 source(./function/aux_function.R)
-nareapreprocessing_allrep <- function(rep_id,  # while calling script change your rep_id=1 to 5 to get all rep pre-processing output
+nareapreprocessing_allrep (rep_id,  # while calling script change your rep_id=1 to 5 to get all rep pre-processing output
                     breakdown_dir = "./output",
                     phenotypes_path = "./data/phenotypes_whole.csv",
                     sample_path = "./data/sample_per_rep.csv",
@@ -117,7 +117,7 @@ nareapreprocessing_allrep <- function(rep_id,  # while calling script change you
 ```
 
 ```
-slapreprocessing_allrep<- function(rep_id,
+slapreprocessing_allrep(rep_id,
                         breakdown_dir = "./output",
                         phenotypes_path = "./data/phenotypes_whole.csv",
                         sample_path = "./data/sample_per_rep.csv",
@@ -125,7 +125,7 @@ slapreprocessing_allrep<- function(rep_id,
                         k_groups = 3)
 ```
 ```
-pnpreprocessing_allrep <- function(rep_id,
+pnpreprocessing_allrep(rep_id,
                        breakdown_dir = "./output",
                        phenotypes_path = "./data/phenotypes_whole.csv",
                        sample_path = "./data/sample_per_rep.csv",
@@ -134,7 +134,7 @@ pnpreprocessing_allrep <- function(rep_id,
                        pn_trait_col = "fs_plsr_narea")
 ```
 ```
-pspreprocessing_allrep <- function(rep_id,
+pspreprocessing_allrep(rep_id,
                        breakdown_dir = "./output",
                        phenotypes_path = "./data/phenotypes_whole.csv",
                        sample_path = "./data/sample_per_rep.csv",
