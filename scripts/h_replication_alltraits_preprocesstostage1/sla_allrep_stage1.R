@@ -14,13 +14,13 @@ library(knitr)
 library(kableExtra)
 library(dplyr)
 
-#selecting the synthetic trait for all five reps for sla and combining with respective phenotypic file
-slapreprocessing_allrep<- function(rep_id,
-                                   breakdown_dir = "./output",
-                                   phenotypes_path = "./data/phenotypes_whole.csv",
-                                   sample_path = "./data/sample_per_rep.csv",
-                                   out_dir = "./output",
-                                   k_groups = 3)
+# #selecting the synthetic trait for all five reps for sla and combining with respective phenotypic file
+# slapreprocessing_allrep<- function(rep_id,
+#                                    breakdown_dir = "./output",
+#                                    phenotypes_path = "./data/phenotypes_whole.csv",
+#                                    sample_path = "./data/sample_per_rep.csv",
+#                                    out_dir = "./output",
+#                                    k_groups = 3)
 
 
 Sratio_transform_rep1<-read.csv("./output/Sratio_transform_rep1.csv")

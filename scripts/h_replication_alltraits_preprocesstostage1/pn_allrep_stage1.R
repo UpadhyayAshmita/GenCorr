@@ -17,13 +17,13 @@ library(sparkline)
 library(htmlwidgets)
 library(gt)
 source("./function/aux_function.R")
-
-pnpreprocessing_allrep(rep_id= 1, breakdown_dir = "./output", # change rep id = 1 to 5 to get all 5 reps pn output
-                               phenotypes_path = "./data/phenotypes_whole.csv",
-                               sample_path = "./data/sample_per_rep.csv",
-                               out_dir = "./output",
-                               k_groups = 3,
-                               pn_trait_col = "fs_plsr_narea")
+#
+# pnpreprocessing_allrep(rep_id= 1, breakdown_dir = "./output", # change rep id = 1 to 5 to get all 5 reps pn output
+#                                phenotypes_path = "./data/phenotypes_whole.csv",
+#                                sample_path = "./data/sample_per_rep.csv",
+#                                out_dir = "./output",
+#                                k_groups = 3,
+#                                pn_trait_col = "fs_plsr_narea")
 
 pnratio_transform_rep1<-read.csv("./output/pnratio_transform_rep1.csv")
 pnratio_transform_rep2<-read.csv("./output/pnratio_transform_rep2.csv")
@@ -240,7 +240,6 @@ fwrite( pnbluesMW_rep2, "./output/pnbluesMW_rep2.csv", row.names = FALSE)
 fwrite( pnbluesMW_rep1, "./output/pnbluesMW_rep1.csv", row.names = FALSE)
 
 #combining blues for trait and waveratio for EF and MW location for rep1 to 5
-
 Names_WEST <- fread("./data/Names_WEST_SF.csv")
 Names_WEST$Name2 <- gsub(" ", "", Names_WEST$Name2)
 colnames(Names_WEST)[colnames(Names_WEST) == "Name2"] <- "name2"
@@ -269,3 +268,12 @@ get_coh2_0_syntrait(
 #calculating blues for the selected low coheritable synthetic trait
 # pn (inputs: pnwave_repX_lowcoh2.csv; outputs: pnratio_*, pnblues*)
 run_blues_all_reps_oldnames("fs_plsr_narea", "pnwave", "pn")
+
+#filtering the blues based on names west dataset
+#load the kinship matrix
+kin <- fread("./data/kinship_additive.txt", data.table = FALSE)
+rownames(kin) <- colnames(kin)
+kin <- as.matrix(kin)
+#cleaning blues file
+clean_with_names_west_and_kin_all_reps(out_prefix = "pn", kin = kin)
+
