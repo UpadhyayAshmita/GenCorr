@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -J Sla_complete_efmw
+#SBATCH -J sla_complete_efmw
 #SBATCH -p comp06
 #SBATCH -N 1
 #SBATCH -n 1
@@ -13,12 +13,11 @@ set -euo pipefail
 mkdir -p logs
 
 module purge
-# keep this minimal like your cloud72 jobs
 module load gcc/9.3.1 mkl/19.0.5 R/4.2.2
 
 # --- map array id -> trait_index + cv_scheme ---
 # traits you mentioned earlier:
-traits=("1683_wave_1666" "1640_wave_1655" "738_wave_1111")
+traits=("1511_wave_2314" "1039_wave_405" "910_wave_731") #edit your selected synthetic traits for your current run in sla blues file from earlier stage
 schemes=("CV1" "CV2")
 
 k=$((SLURM_ARRAY_TASK_ID - 1))
@@ -33,8 +32,8 @@ echo "SLURM_JOB_ID=${SLURM_JOB_ID}  TASK=${SLURM_ARRAY_TASK_ID}"
 echo "trait_index=${trait_index} trait=${trait} cv_scheme=${cv_scheme}"
 module list
 
-# run (edit the path to your R script file)
-Rscript scripts/completemodel_parallel/rerun_sla_completemodel_mwef.R \
+# run (edit the path to your R script file which you want to call here)
+Rscript scripts/07_sla_completemodel_efmw.R \
   --trait "${trait}" \
   --trait_index "${trait_index}" \
-  --cv_scheme "${cv_scheme}"
+  --cv_scheme "${cv_scheme}"r

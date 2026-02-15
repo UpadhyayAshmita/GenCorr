@@ -766,6 +766,189 @@ get_coh2_0_syntrait <- function(
   invisible(selected_summary)
 }
 
+#getting coh2=0 synthetic traits blue for all rep all traits
+prep_wave_data <- function(df) {
+  df |>
+    clean_names() |>
+    mutate(
+      name2 = factor(name2),
+      taxa  = factor(taxa),
+      loc   = factor(loc),
+      set   = factor(set),
+      block = factor(block),
+      range = factor(range),
+      row   = factor(row)
+    ) |>
+    arrange(loc, range, row)
+}
+
+detect_ratio_col <- function(df) {
+  ratio_cols <- grep("^wave_\\d+_wave_\\d+$", names(df), value = TRUE)
+  if (length(ratio_cols) != 1) {
+    stop("Expected exactly 1 ratio column like wave_####_wave_####; found: ",
+         paste(ratio_cols, collapse = ", "))
+  }
+  ratio_cols[[1]]
+}
+
+fit_ratio_blues <- function(df, ratio_col, loc_value) {
+  fml <- stats::as.formula(paste(ratio_col, "~ set + name2"))
+
+  m <- asreml(
+    fixed = fml,
+    random = ~ block,
+    data = df,
+    subset = loc == loc_value,
+    na.action = na.method(x = "include"),
+    predict = predict.asreml(classify = "name2", sed = TRUE)
+  )
+  m <- update.asreml(m)
+
+  temp <- m$predictions$pvals[, 1:2]
+  temp$wave <- ratio_col
+
+  temp |>
+    as.data.frame() |>
+    pivot_wider(names_from = wave, values_from = predicted.value)
+}
+
+fit_trait_blues <- function(df, trait_col, loc_value) {
+  if (!trait_col %in% names(df)) {
+    stop("Trait column '", trait_col, "' not found in data.")
+  }
+
+  fml <- stats::as.formula(paste(trait_col, "~ name2 + set"))
+
+  m <- asreml(
+    fixed = fml,
+    random = ~ block,
+    data = df,
+    subset = loc == loc_value,
+    na.action = na.method(x = "include"),
+    predict = predict.asreml(classify = "name2")
+  )
+  m <- update.asreml(m)
+
+  out <- data.frame(
+    name2 = m$predictions$pvals$name2,
+    value = round(m$predictions$pvals$predicted.value, 3)
+  )
+  names(out)[names(out) == "value"] <- trait_col
+  out
+}
+
+run_blues_all_reps_oldnames <- function(
+    trait_col,          # e.g. "narea", "sla", "fs_plsr_narea", "plsr_sla_sorghum"
+    in_prefix,          # e.g. "Nwave", "Swave", "pnwave", "pswave"
+    out_prefix,         # e.g. "N", "S", "pn", "ps"
+    reps = 1:5,
+    in_dir = "./output",
+    out_dir = "./output"
+) {
+  meta <- vector("list", length(reps))
+
+  for (i in seq_along(reps)) {
+    rep <- reps[i]
+
+    in_path <- file.path(in_dir, paste0(in_prefix, "_rep", rep, "_lowcoh2.csv"))
+    df <- read.csv(in_path) |> prep_wave_data()
+
+    ratio_col <- detect_ratio_col(df)
+    meta[[i]] <- data.frame(rep = rep, ratio_col = ratio_col)
+
+    # --- ratio BLUES ---
+    ratio_mw <- fit_ratio_blues(df, ratio_col, "MW")
+    ratio_ef <- fit_ratio_blues(df, ratio_col, "EF")
+
+    fwrite(ratio_mw, file.path(out_dir, paste0(out_prefix, "ratio_bluesMW1_rep", rep, ".csv")))
+    fwrite(ratio_ef, file.path(out_dir, paste0(out_prefix, "ratio_bluesEF1_rep", rep, ".csv")))
+
+    # --- trait BLUES ---
+    trait_mw <- fit_trait_blues(df, trait_col, "MW")
+    trait_ef <- fit_trait_blues(df, trait_col, "EF")
+
+    # --- join ratio + trait (same as your pipeline) ---
+    blues_mw <- left_join(ratio_mw, trait_mw, by = "name2")
+    blues_ef <- left_join(ratio_ef, trait_ef, by = "name2")
+
+    fwrite(blues_mw, file.path(out_dir, paste0(out_prefix, "bluesMW1_rep", rep, ".csv")))
+    fwrite(blues_ef, file.path(out_dir, paste0(out_prefix, "bluesEF1_rep", rep, ".csv")))
+  }
+
+  meta <- bind_rows(meta)
+  cat("\n===== Ratio column used per rep for", trait_col, "=====\n")
+  print(meta)
+
+  invisible(meta)
+}
+
+
+
+#cleaning the blues with name west and kin data
+library(data.table)
+library(dplyr)
+
+clean_with_names_west_and_kin_all_reps <- function(
+    out_prefix,                     # "N" or "S" or "pn" or "ps"
+    reps = 1:5,
+    out_dir = "./output",
+    names_west_path = "./data/Names_WEST_SF.csv",
+    kin                             # pass your kin object
+) {
+  # Load + prep Names_WEST exactly like your scripts
+  names_west <- fread(names_west_path)
+  names_west$Name2 <- gsub(" ", "", names_west$Name2)
+  colnames(names_west)[colnames(names_west) == "Name2"] <- "name2"
+
+  if (is.null(rownames(kin))) {
+    stop("kin must have rownames (taxa IDs) for filtering.")
+  }
+
+  for (rep in reps) {
+    ef_path <- file.path(out_dir, paste0(out_prefix, "bluesEF1_rep", rep, ".csv"))
+    mw_path <- file.path(out_dir, paste0(out_prefix, "bluesMW1_rep", rep, ".csv"))
+
+    if (!file.exists(ef_path)) stop("Missing file: ", ef_path)
+    if (!file.exists(mw_path)) stop("Missing file: ", mw_path)
+
+    blues_ef <- fread(ef_path)
+    blues_mw <- fread(mw_path)
+
+    # combine EF + MW like your script
+    blues_all <- bind_rows(
+      "EF" = blues_ef,
+      "MW" = blues_mw,
+      .id = "env"
+    )
+
+    # join Names_WEST + apply your PI rule
+    blues_all <- blues_all |>
+      left_join(names_west |> dplyr::select(name2, Corrected_names), by = "name2") |>
+      mutate(
+        taxa = ifelse(
+          (name2 != Corrected_names) & grepl("PI", Corrected_names),
+          NA,
+          Corrected_names
+        )
+      )
+
+    # remove NA taxa, drop helper columns
+    out_final <- blues_all |>
+      filter(!is.na(taxa)) |>
+      select(-name2, -Corrected_names)
+
+    # filter to taxa in kin rownames (exactly like your script)
+    out_final <- droplevels(out_final[out_final$taxa %in% rownames(kin), ])
+
+    # write output with the same old naming pattern
+    out_path <- file.path(out_dir, paste0(out_prefix, "_blues1_rep", rep, ".csv"))
+    write.csv(out_final, out_path, row.names = FALSE)
+  }
+
+  invisible(TRUE)
+}
+
+
 #creating sort
 # ---------------------creating list with 5 fold and 20 reps----------------------
 create_folds<- function(individuals, nfolds, reps, seed = 123){

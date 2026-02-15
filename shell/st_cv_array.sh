@@ -30,4 +30,4 @@ trait=${traits[$(( i % 4 ))]}
 scheme=${schemes[$(( i / 4 ))]}
 
 echo "Running trait=${trait} scheme=${scheme} on $(hostname)"
-Rscript scripts/e_run_singletraits_cv_completemodel.R "${trait}" "${scheme}"
+Rscript scripts/06_run_singletraits_cv_completemodel.R "${trait}" "${scheme}"

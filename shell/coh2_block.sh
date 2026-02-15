@@ -25,7 +25,7 @@ for i in $(seq 0 49); do
   start_=$((i * 43 + 350))
   end_=$(((i + 1) * 43 + 350))
 
-  srun --exclusive -N1 -n1 Rscript ./scripts/b_coh2_scripts/coh2_block.R narea "$start_" "$end_" &
+  srun --exclusive -N1 -n1 Rscript ./scripts/02_coh2_block.R narea "$start_" "$end_" &  #change narea to ps, pn , sla for other trats
 
   if (( $(jobs -r | wc -l) >= 32 )); then
     wait -n

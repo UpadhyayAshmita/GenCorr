@@ -1,82 +1,95 @@
 #!/usr/bin/env Rscript
 
-# Load necessary packages
-library(tidyverse)
-library(data.table)
-library(asreml)
-library(fs)
-library(parallel)
-library(argparse)
+suppressPackageStartupMessages({
+  library(tidyverse)
+  library(data.table)
+  library(asreml)
+  library(parallel)
+  library(argparse)
+})
 
-# Argument parsing
-parser <- ArgumentParser(description = 'Run synthetic trait models in parallel')
-parser$add_argument('--trait1', type = 'character', required = TRUE, help = 'First synthetic trait')
-parser$add_argument('--trait2', type = 'character', required = TRUE, help = 'Second synthetic trait')
-parser$add_argument('--trait3', type = 'character', required = TRUE, help = 'Third synthetic trait')
-parser$add_argument('--repetition', type = 'integer', required = TRUE, help = 'Repetition number')
+# ---------------- args ----------------
+parser <- ArgumentParser(description = "Run PS synthetic trait models (EFMW + MWEF) in parallel")
+parser$add_argument("--trait1", type="character", required=TRUE)
+parser$add_argument("--trait2", type="character", required=TRUE)
+parser$add_argument("--trait3", type="character", required=TRUE)
+parser$add_argument("--repetition", type="integer", required=TRUE)
 args <- parser$parse_args()
 
-# Capture arguments
-trait1 <- args$trait1
-trait2 <- args$trait2
-trait3 <- args$trait3
+traits <- list(args$trait1, args$trait2, args$trait3)
 repetition <- args$repetition
 
-# Define traits as a list
-traits <- list(trait1, trait2, trait3)
+# ------------- paths (as requested) -------------
+kin_path   <- file.path("./data", "kin_additive.txt")
+blues_path <- file.path("./output", paste0("ps_blues_rep", repetition, ".csv"))
 
-# Load kinship matrix
-kin <- fread('kin_additive.txt', data.table = FALSE)
+# ---------------- load kin ----------------
+kin <- fread(kin_path, data.table = FALSE)
 rownames(kin) <- colnames(kin)
 kin <- as.matrix(kin)
 
-# Load and prepare N_blues data
-N_blues <- read.csv(paste0("N_blues_rep", repetition, ".csv"))
-N_bluesEF <- N_blues %>% filter(env == "EF") %>% mutate(taxa = factor(taxa))
-N_bluesMW <- N_blues %>% filter(env == "MW") %>% mutate(taxa = factor(taxa))
+# ---------------- load blues ----------------
+ps_blues <- read.csv(blues_path)
+ps_bluesEF <- ps_blues %>% filter(env == "EF") %>% mutate(taxa = factor(taxa))
+ps_bluesMW <- ps_blues %>% filter(env == "MW") %>% mutate(taxa = factor(taxa))
 
-# Function to create folds
+# ---------------- folds----------------
 create_folds <- function(individuals, nfolds, reps, seed = 123) {
   library(cvTools)
   set.seed(seed)
-  sort <- list()
   individuals <- as.factor(individuals)
   nl <- length(unique(individuals))
-  for (a in 1:reps) {
+
+  sort <- vector("list", reps)
+  for (a in seq_len(reps)) {
     folds <- cvFolds(nl, type = "random", K = nfolds)
     Sample <- cbind(folds$which, folds$subsets)
-    cv <- split(levels(individuals)[Sample[, 2]], f = Sample[, 1])
-    sort[[a]] <- cv
+    sort[[a]] <- split(levels(individuals)[Sample[, 2]], f = Sample[, 1])
   }
-  return(sort)
+  sort
 }
 
-sort <- create_folds(individuals = N_bluesEF$taxa, nfolds = 5, reps = 20, seed = 123)
+sort <- create_folds(individuals = ps_bluesEF$taxa, nfolds = 5, reps = 20, seed = 123)
 
-# Load and prepare ps_blues data
-ps_blues <- read.csv(paste0("ps_blues_rep", repetition, ".csv"))
-ps_bluesEF <- ps_blues %>% filter(env == "EF") %>% mutate(taxa = factor(taxa))
-ps_bluesMW <- ps_blues %>% filter(env == "MW") %>% mutate(taxa = factor(taxa))
-# Function to run model for a given trait and CV scheme
-run_trait_model <- function(trait, trait_index, cv_scheme) {
+# -------- helper: robust wave column name --------
+wave_colname <- function(trait_arg) {
+  if (startsWith(trait_arg, "wave_")) trait_arg else paste0("wave_", trait_arg)
+}
+
+# ---------------- core runner ----------------
+run_trait_model <- function(trait, trait_index, cv_scheme, direction_tag) {
+  train_df <- if (direction_tag == "EFMW") ps_bluesEF else ps_bluesMW
+  valid_df <- if (direction_tag == "EFMW") ps_bluesMW else ps_bluesEF
+
+  wcol <- wave_colname(trait)
+
+  suffix <- if (direction_tag == "MWEF") "_mwef" else ""
+  fname    <- file.path("./output", paste0("psW", trait_index, "_", cv_scheme, "_rep", repetition, suffix, ".csv"))
+  ac_fname <- file.path("./output", paste0("acpsW", trait_index, "_", cv_scheme, "_rep", repetition, suffix, ".csv"))
+
+  fwrite(data.frame(taxa="taxa", GEBV="GEBV", observed="observed"),
+         fname, sep = ",", col.names = FALSE)
+
   ac_rep <- c()
-  fname <- paste0("psW", trait_index, "_", cv_scheme, "_rep", repetition, ".txt")
-  ac_fname <- paste0("acpsW", trait_index, "_", cv_scheme, "_rep", repetition, ".txt")
-  fwrite(data.frame("taxa", "GEBV"), fname, sep = "\t", col.names = FALSE)
-  for (j in 1:length(sort)) {
-    r_rep <- list()
+
+  for (j in seq_along(sort)) {
+    r_rep <- vector("list", 5)
+
     for (i in 1:5) {
-      test <- ps_bluesEF
+      test <- train_df
       test[test$taxa %in% sort[[j]][[i]], "ps"] <- NA
+
       if (cv_scheme == "CV1") {
-        test[test$taxa %in% sort[[j]][[i]], paste0("wave_", trait)] <- NA
+        if (!wcol %in% names(test)) stop("Missing wave column: ", wcol)
+        test[test$taxa %in% sort[[j]][[i]], wcol] <- NA
       }
 
       model_rep <- asreml(
-        fixed = as.formula(paste0("cbind(ps, wave_", trait, ") ~ trait")),
+        fixed = as.formula(paste0("cbind(ps, ", wcol, ") ~ trait")),
         random = ~ corgh(trait):vm(taxa, source = kin, singG = "NSD"),
         residual = ~ units:corgh(trait),
-        data = test, na.action = na.method(x = "include"),
+        data = test,
+        na.action = na.method(x = "include"),
         predict = predict.asreml(classify = "trait:taxa")
       )
 
@@ -86,26 +99,25 @@ run_trait_model <- function(trait, trait_index, cv_scheme) {
     }
 
     raS <- Reduce(rbind, r_rep)
-    raS <- raS %>% left_join(ps_bluesMW[, c("taxa", "ps")])
+    raS <- raS %>% left_join(valid_df[, c("taxa", "ps")], by = "taxa")
 
-    fwrite(raS, fname, sep = "\t", append = TRUE, col.names = FALSE)
+    fwrite(raS, fname, sep = ",", append = TRUE, col.names = FALSE)
     ac_rep[j] <- cor(raS[, 2], raS[, 3], use = "complete.obs")
   }
 
-  fwrite(as.matrix(ac_rep), ac_fname, sep = "\t", col.names = FALSE)
+  fwrite(data.frame(accuracy = ac_rep), ac_fname, sep = ",", col.names = TRUE)
 }
 
-# Define CV schemes
 cv_schemes <- c("CV2", "CV1")
+directions <- c("EFMW", "MWEF")
 
-# Function to execute the model for a given trait and CV scheme
-run_parallel_cv <- function(trait) {
-  mclapply(cv_schemes, function(cv_scheme) {
-    run_trait_model(trait, which(traits == trait), cv_scheme)
-  }, mc.cores = 2)  # Use 2 cores for the CV schemes
+run_parallel_for_trait <- function(trait) {
+  trait_index <- which(unlist(traits) == trait)
+  jobs <- expand.grid(cv_scheme = cv_schemes, direction = directions, stringsAsFactors = FALSE)
+
+  mclapply(seq_len(nrow(jobs)), function(k) {
+    run_trait_model(trait, trait_index, jobs$cv_scheme[k], jobs$direction[k])
+  }, mc.cores = 2)
 }
 
-# Run each trait in parallel across different cores
-mclapply(traits, function(trait) {
-  run_parallel_cv(trait)
-}, mc.cores = 3)  # Use 3 cores for the traits
+mclapply(unlist(traits), run_parallel_for_trait, mc.cores = 3)

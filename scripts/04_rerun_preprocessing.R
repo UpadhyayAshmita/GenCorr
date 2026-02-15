@@ -81,22 +81,22 @@ Nratio_transform<- read.csv("./output/Nratio_transform.csv")
 com_col <- colnames(wave)[colnames(wave) %in% Nratio_transform$wave_sel]
 Nwave_pheno<- wave %>% select(1:10, com_col)
 write.csv(Nwave_pheno,"./output/Nwave_pheno.csv", row.names = F)
-#plotting
-l <- Nratio_transform |>
-  mutate(wave_1 = as.numeric(gsub("_.*", "",gsub("wave_","", wave_1))),
-         wave_2 = as.numeric(gsub(".*_","", wave_2))) |> ungroup() |>
-  select(wave_1, wave_2) |> mutate(label = "*") |> as.data.frame()
-heatmap <-N |> mutate(wave_1 = as.numeric(gsub("wave_","", wave_1)),
-                      wave_2 = as.numeric(gsub("wave_","", wave_2))) |>
-  ggplot(aes(x = wave_1, y = wave_2)) +
-  geom_tile(aes(fill = coh2)) +
-  scale_fill_gradient(low = "white", high = "red",na.value="black") +
-  labs(x = "Wave2", y = "Wave1", title = "Heatmap-Narea") +
-  # scale_x_continuous(limits = c(350, 2500)) +
-  # scale_y_continuous(limits = c(350, 2500)) +
-  geom_label(data = l, aes(label = label))+
-  theme_minimal()
-print(heatmap)
+# #plotting
+# l <- Nratio_transform |>
+#   mutate(wave_1 = as.numeric(gsub("_.*", "",gsub("wave_","", wave_1))),
+#          wave_2 = as.numeric(gsub(".*_","", wave_2))) |> ungroup() |>
+#   select(wave_1, wave_2) |> mutate(label = "*") |> as.data.frame()
+# heatmap <-N |> mutate(wave_1 = as.numeric(gsub("wave_","", wave_1)),
+#                       wave_2 = as.numeric(gsub("wave_","", wave_2))) |>
+#   ggplot(aes(x = wave_1, y = wave_2)) +
+#   geom_tile(aes(fill = coh2)) +
+#   scale_fill_gradient(low = "white", high = "red",na.value="black") +
+#   labs(x = "Wave2", y = "Wave1", title = "Heatmap-Narea") +
+#   # scale_x_continuous(limits = c(350, 2500)) +
+#   # scale_y_continuous(limits = c(350, 2500)) +
+#   geom_label(data = l, aes(label = label))+
+#   theme_minimal()
+# print(heatmap)
 #ggsave(plot=heatmap,"Heatmap_narea.jpeg")
 #sla
 sum(is.na(S$corg))#11
@@ -162,22 +162,22 @@ write.csv(Sratio_transform, "./output/Sratio_transform.csv", row.names = F)
 com_col <- colnames(wave)[colnames(wave) %in% Sratio_transform$wave_sel]
 Swave_pheno<- wave %>% select(1:9, sla, com_col)
 write.csv(Swave_pheno, "./output/Swave_pheno.csv", row.names = F)
-
-#plotting
-l <- Sratio_transform |>
-  mutate(wave_1 = as.numeric(gsub("_.*", "",gsub("wave_","", wave_1))),
-         wave_2 = as.numeric(gsub(".*_","", wave_2))) |> ungroup() |>
-  select(wave_1, wave_2) |> mutate(label = "*") |> as.data.frame()
-heatmap <-S |> mutate(wave_1 = as.numeric(gsub("wave_","", wave_1)),
-                      wave_2 = as.numeric(gsub("wave_","", wave_2))) |>
-  ggplot(aes(x = wave_1, y = wave_2)) +
-  geom_tile(aes(fill = coh2)) +
-  scale_fill_gradient(low = "white", high = "red",na.value="black") +
-  labs(x = "Wave2", y = "Wave1", title = "Heatmap-SLA") +
-  # scale_x_continuous(limits = c(350, 2500)) +
-  # scale_y_continuous(limits = c(350, 2500)) +
-  geom_label(data = l, aes(label = label))+
-  theme_minimal()
+#
+# #plotting
+# l <- Sratio_transform |>
+#   mutate(wave_1 = as.numeric(gsub("_.*", "",gsub("wave_","", wave_1))),
+#          wave_2 = as.numeric(gsub(".*_","", wave_2))) |> ungroup() |>
+#   select(wave_1, wave_2) |> mutate(label = "*") |> as.data.frame()
+# heatmap <-S |> mutate(wave_1 = as.numeric(gsub("wave_","", wave_1)),
+#                       wave_2 = as.numeric(gsub("wave_","", wave_2))) |>
+#   ggplot(aes(x = wave_1, y = wave_2)) +
+#   geom_tile(aes(fill = coh2)) +
+#   scale_fill_gradient(low = "white", high = "red",na.value="black") +
+#   labs(x = "Wave2", y = "Wave1", title = "Heatmap-SLA") +
+#   # scale_x_continuous(limits = c(350, 2500)) +
+#   # scale_y_continuous(limits = c(350, 2500)) +
+#   geom_label(data = l, aes(label = label))+
+#   theme_minimal()
 
 #ggsave(plot=heatmap,"Heatmap_sla.jpeg")
 
@@ -244,23 +244,23 @@ com_col <- colnames(wave)[colnames(wave) %in% pnratio_transform$wave_sel]
 pnwave_pheno<- wave %>% select(1:9,fs_plsr_narea,all_of(com_col))
 write.csv(pnwave_pheno,"./output/pnwave_pheno.csv", row.names = F)
 
-#plotting
-l <- pnratio_transform |>
-  mutate(wave_1 = as.numeric(gsub("_.*", "",gsub("wave_","", wave_1))),
-         wave_2 = as.numeric(gsub(".*_","", wave_2))) |> ungroup() |>
-  select(wave_1, wave_2) |> mutate(label = "*") |> as.data.frame()
-heatmap <-pn |> mutate(wave_1 = as.numeric(gsub("wave_","", wave_1)),
-                       wave_2 = as.numeric(gsub("wave_","", wave_2))) |>
-  ggplot(aes(x = wave_1, y = wave_2)) +
-  geom_tile(aes(fill = coh2)) +
-  scale_fill_gradient(low = "white", high = "red",na.value="black") +
-  labs(x = "Wave2", y = "Wave1", title = "Heatmap-PLSR Narea") +
-  # scale_x_continuous(limits = c(350, 2500)) +
-  # scale_y_continuous(limits = c(350, 2500)) +
-  geom_label(data = l, aes(label = label))+
-  theme_minimal()
-
-ggsave(plot=heatmap,"Heatmap_plsrnarea.jpeg")
+# #plotting
+# l <- pnratio_transform |>
+#   mutate(wave_1 = as.numeric(gsub("_.*", "",gsub("wave_","", wave_1))),
+#          wave_2 = as.numeric(gsub(".*_","", wave_2))) |> ungroup() |>
+#   select(wave_1, wave_2) |> mutate(label = "*") |> as.data.frame()
+# heatmap <-pn |> mutate(wave_1 = as.numeric(gsub("wave_","", wave_1)),
+#                        wave_2 = as.numeric(gsub("wave_","", wave_2))) |>
+#   ggplot(aes(x = wave_1, y = wave_2)) +
+#   geom_tile(aes(fill = coh2)) +
+#   scale_fill_gradient(low = "white", high = "red",na.value="black") +
+#   labs(x = "Wave2", y = "Wave1", title = "Heatmap-PLSR Narea") +
+#   # scale_x_continuous(limits = c(350, 2500)) +
+#   # scale_y_continuous(limits = c(350, 2500)) +
+#   geom_label(data = l, aes(label = label))+
+#   theme_minimal()
+#
+# ggsave(plot=heatmap,"Heatmap_plsrnarea.jpeg")
 #plsr-sla
 sum(is.na(ps$corg))#396
 sum(ps$corg< -1 | ps$corg > 1, na.rm = T) #5152
@@ -325,20 +325,20 @@ pswave_pheno<- wave %>% select(1:9,plsr_sla_sorghum,all_of(com_col))
 write.csv(pswave_pheno,"./output/pswave_pheno.csv", row.names = F)
 pswave_pheno<- read.csv("./output/pswave_pheno.csv")
 
-#plotting
-l <- psratio_transform |>
-  mutate(wave_1 = as.numeric(gsub("_.*", "",gsub("wave_","", wave_1))),
-         wave_2 = as.numeric(gsub(".*_","", wave_2))) |> ungroup() |>
-  select(wave_1, wave_2) |> mutate(label = "*") |> as.data.frame()
-heatmap <-ps |> mutate(wave_1 = as.numeric(gsub("wave_","", wave_1)),
-                       wave_2 = as.numeric(gsub("wave_","", wave_2))) |>
-  ggplot(aes(x = wave_1, y = wave_2)) +
-  geom_tile(aes(fill = coh2)) +
-  scale_fill_gradient(low = "white", high = "red",na.value="black") +
-  labs(x = "Wave2", y = "Wave1", title = "HeatmapPLSR Sla") +
-  # scale_x_continuous(limits = c(350, 2500)) +
-  # scale_y_continuous(limits = c(350, 2500)) +
-  geom_label(data = l, aes(label = label))+
-  theme_minimal()
-
-ggsave(plot=heatmap,"Heatmap_plsrsla.jpeg")
+# #plotting
+# l <- psratio_transform |>
+#   mutate(wave_1 = as.numeric(gsub("_.*", "",gsub("wave_","", wave_1))),
+#          wave_2 = as.numeric(gsub(".*_","", wave_2))) |> ungroup() |>
+#   select(wave_1, wave_2) |> mutate(label = "*") |> as.data.frame()
+# heatmap <-ps |> mutate(wave_1 = as.numeric(gsub("wave_","", wave_1)),
+#                        wave_2 = as.numeric(gsub("wave_","", wave_2))) |>
+#   ggplot(aes(x = wave_1, y = wave_2)) +
+#   geom_tile(aes(fill = coh2)) +
+#   scale_fill_gradient(low = "white", high = "red",na.value="black") +
+#   labs(x = "Wave2", y = "Wave1", title = "HeatmapPLSR Sla") +
+#   # scale_x_continuous(limits = c(350, 2500)) +
+#   # scale_y_continuous(limits = c(350, 2500)) +
+#   geom_label(data = l, aes(label = label))+
+#   theme_minimal()
+#
+# ggsave(plot=heatmap,"Heatmap_plsrsla.jpeg")

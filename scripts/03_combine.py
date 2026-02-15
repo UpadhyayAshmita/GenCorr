@@ -1,7 +1,7 @@
 # This file can be used to aggregate coheritability runs from multiple workers
 import pandas as pd
 
-trait = "sla"   # "narea", "sla", "pn", "ps"
+trait = "sla"   # you can change the trait = to all four trait "narea", "sla", "pn", "ps"
 
 columns = ["wave_1", "wave_2", "trait",
            "coh2", "h2_trait", "h2_ratio",

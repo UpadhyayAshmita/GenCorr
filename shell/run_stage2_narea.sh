@@ -33,7 +33,7 @@ echo "trait_index=${trait_index} trait=${trait} cv_scheme=${cv_scheme}"
 module list
 
 # run (edit the path to your R script file which you want to call here)
-Rscript scripts/completemodel_parallel/rerun_narea_completemodel_mwef.R \
+Rscript scripts/07_narea_completemodel_efmw.R \
   --trait "${trait}" \
   --trait_index "${trait_index}" \
-  --cv_scheme "${cv_scheme}"
+  --cv_scheme "${cv_scheme}"r

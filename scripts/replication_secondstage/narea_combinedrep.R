@@ -46,7 +46,7 @@ create_folds <- function(individuals, nfolds, reps, seed = 123) {
   sort
 }
 
-# Keep same fold definition you used before (based on EF taxa levels)
+# based on EF taxa levels)
 sort <- create_folds(individuals = N_bluesEF$taxa, nfolds = 5, reps = 20, seed = 123)
 
 # ---------------- core model runner ----------------
