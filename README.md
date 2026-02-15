@@ -152,3 +152,18 @@ source("./scripts/h_replication_alltraits_preprocesstostage1/ps_allrep_stage1.R)
 source("./scripts/h_replication_alltraits_preprocesstostage1/pn_allrep_stage1.R)
 ```
 ## second stage model for replication 1-5 
+Now to fit teh second stage model for all four target trait and their 3 synthetic trait each for 5 reps in two scenarios efmw and mwef, you can submit the R script below using the bash script:
+```
+source(./scripts/replication_secondstage/narea_combinedrep.R)
+source(./scripts/replication_secondstage/sla_combinedrep.R)
+source(./scripts/replication_secondstage/ps_combinedrep.R)
+source(./scripts/replication_secondstage/pn_combinedrep.R)
+
+```
+You can submit the R script using a generic bash script for this step
+```
+source(./shell/secondstage_allrep.sh)
+# Usage:
+sbatch shell/secondstage_allrep.sh <target> <trait1> <trait2> <trait3> <rep> 
+#eg: target= ps, pn, narea, sla & trait1=wave_1715_wave_1691, trait2= wave_728_wave_1071, trait3=wave_2335_wave_1446 & rep=3
+```
