@@ -45,7 +45,7 @@ source(./scripts/02_coh2_block_rep5.R)
 sbatch shell/coh2_block.sh  
 ```
 You can change the R script you call inside the shell script and run the complete model and replication dataset for the subset model; just change the trait name and R script path in the bash script
-You can get the coheritability breakdown dataset for the four target traits in complete and replicated scenarios by running the .py script from the compute node in HPC for complete model 
+You can get the coheritability breakdown dataset for the four target traits in complete and replicated scenarios by running the .py script from the compute node in HPC for the complete model 
 ```
 source(./scripts/03_combine.py)
 # This file can be used to aggregate coheritability runs from multiple workers
@@ -108,17 +108,17 @@ combined_df.to_csv(f"{trait}_breakdown1.csv", index=False) # remeber to name the
 ## Pre-processing 
 For this, you would need to get into the  compute node and an R session with R() in HPC and run the script below:
 ```
-source(./scripts/c2_rerun_preprocessing.R)
+source(./scripts/04_rerun_preprocessing.R)
 ```
-You will have all three wave-ratios selected and the necessary output for four target traits by running this prep-processing step to run the further step.
+You will have all three wave-ratios selected and the necessary output for four target traits by running this prep-processing step, which will enable the next step.
 ## Calculating BLUES and Heritability of synthetic trait/ selected wave ratios and each target trait in EF and MW locations
 Again, you would need to run this in an interactive session in R
 ```
-source(./scripts/d_rerun_modelfit.R)
+source(./scripts/05_rerun_modelfit.R)
 ```
 ## Single-trait second stage model for all four target traits 
 ```
-source(./scripts/e_run_singletraits_cv_completemodel.R)
+source(./scripts/06_run_singletraits_cv_completemodel.R)
 ```
 R script for calculating the accuracy and GebV of the single-trait for the complete model is listed above, using the below-listed bash script, which is modified for each target trait sla, narea, plsr-sla, plsr-narea, and can run the e_run_singletraits_cv_completemodel.R script
 ```
@@ -127,15 +127,28 @@ sbatch ./shell/st_cv_array.sh
 ## Multi-trait second stage model for all four target traits
 R scripts for each trait can be found inside the scripts/f_completemodel_parallel/ dir, and can be submitted through a bash script for each trait, which includes both CV1 and CV2 calculation
 ```
-source (./scripts/f_completemodel_parallel/rerun_narea_completemodel_efmw.R)
-source (./scripts/f_completemodel_parallel/rerun_sla_completemodel_efmw.R)
-source(./scripts/f_completemodel_parallel/rerun_ps_completemodel_efmw.R)
-source( ./scripts/f_completemodel_parallel/rerun_ps_completemodel_efmw.R)
+source (./scripts/07_narea_completemodel_efmw.R)
+source (./scripts/07_sla_completemodel_efmw.R)
+source(./scripts/07_ps_completemodel_efmw.R)
+source( ./scripts/07_ps_completemodel_efmw.R)
 ```
-bash script for submitting the R scripts above 
+bash script for submitting the R scripts above; open the bash script to change the three synthetic traits selected depending on your BLUEs output
 ```
-sbatch ./shell/run_stage2_narea.sh
+sbatch ./shell/run_stage2_narea.sh 
+sbatch ./shell/run_stage2_sla.sh
+sbatch ./shell/run_stage2_ps.sh
+sbatch ./shell/run_stage2_pn.sh
 ```
+
+For MWEF scenarios, too, the scripts are available in the  scripts dir; edit the bash script above for your R script (efmw.R changes to mwef.R). However, the synthetic trait for efmw and mwef selected for the respective target traits is identical.
+```
+source (./scripts/07_narea_completemodel_mwef.R)
+source (./scripts/07_sla_completemodel_mwef.R)
+source(./scripts/07_ps_completemodel_mwef.R)
+source( ./scripts/07_ps_completemodel_mwef.R)
+```
+
+
 ## Selecting the synthetic trait with the lowest Coheritability 
 Here again, for the pre-processing step and selecting the synthetic trait with the lowest coheritability, we need to run an interactive R session in HPC; it does need good memory and space because of the clustering work we do to select the trait
 
