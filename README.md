@@ -29,14 +29,22 @@ Run through an interactive R session
 srun --partition=batch --ntasks=1 --cpus-per-task=32 --mem=164G --time=5:00:00 --pty bash
 ```
 ```
-source(./scripts/a_sampling_rep.R)
+source(./scripts/01_sampling_rep.R)
 ```
 ## Coheritability ratios generation for the complete dataset and replication 1-5 datasets
-All six R scripts are available in the ./scripts/b_coh2_scripts/ inside the script dir, which can be run usinga  shell script
+All six R scripts are available in the ./scripts/ inside the script dir, which can be run using shell script
 ```
-sbatch shell/coh2_block.sh
+source(./scripts/02_coh2_block.R)
+source(./scripts/02_coh2_block1.R)
+source(./scripts/02_coh2_block_rep2.R)
+source(./scripts/02_coh2_block_rep3.R)
+source(./scripts/02_coh2_block_rep4.R)
+source(./scripts/02_coh2_block_rep5.R)
 ```
-You can change the R script you call inside the shell script and run the complete model and replication dataset for the subset model
+```
+sbatch shell/coh2_block.sh  
+```
+You can change the R script you call inside the shell script and run the complete model and replication dataset for the subset model; just change the trait name and R script path in the bash script
 You can get the coheritability breakdown dataset for the four target traits in complete and replicated scenarios by running the .py script from the compute node in HPC 
 ```
 source(./scripts/c_combine.py)
