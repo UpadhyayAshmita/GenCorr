@@ -153,10 +153,19 @@ source( ./scripts/07_ps_completemodel_mwef.R)
 Here again, for the pre-processing step and selecting the synthetic trait with the lowest coheritability, we need to run an interactive R session in HPC; it does need good memory and space because of the clustering work we do to select the trait
 
 ```
-./scripts/g_lowest_coh2/g_1_lowcoh2_preprocessingalltrait.R
+./scripts/08_lowcoh2_preprocessingalltrait.R
 ```
-Then, to fit the MT model with the lowest synthetic trait selected, you can submit the R script in the ./scripts/g_lowest_coh2/ dir using the below-mentioned bash scripts
-
+Then, to fit the MT model with the lowest synthetic trait selected, you can submit the R script in the following R scripts using the below-mentioned bash scripts
+```
+source(./scripts/08_NT_efmw_lowcoh2.R)
+source(./scripts/08_ST_efmw_lowcoh2.R)
+source(./scripts/08_pnT_efmw_lowcoh2.R)
+source(./scripts/08_psT_efmw_lowcoh2.R)
+source(./scripts/08_NT_mwef_lowcoh2.R)
+source(./scripts/08_ST_mwef_lowcoh2.R)
+source(./scripts/08_pnT_mwef_lowcoh2.R)
+source(./scripts/08_psT_mwef_lowcoh2.R)
+```
 ```
 sbatch ./shell/run_stage2_NT_lowcoh2.sh
 ```
