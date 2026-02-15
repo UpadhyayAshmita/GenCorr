@@ -77,6 +77,34 @@ loaded_df = pd.read_csv(f"{trait}_breakdown.csv")
 print(loaded_df.head(10))
 
 ```
+
+But to get the breakdown data set for rep1 to rep 5, for eg narea 
+```
+# This file can be used to aggregate coheritability runs from multiple workers
+import pandas as pd
+
+trait = "narea"   # you can change the trait = to all four trait "narea", "sla", "pn", "ps"
+
+columns = ["wave_1", "wave_2", "trait",
+           "coh2", "h2_trait", "h2_ratio",
+           "corg", "corgblup", "covs",
+           "varw", "vars", "vartrait"]
+
+workers = 50
+
+df_list = []
+for i in range(workers):
+    start = (i * 43) + 350
+    end   = ((i + 1) * 43) + 350
+
+    file_name = f"./output1/{trait}_{start}_{end}.csv"   # remeber to direct the path to output dir where the coh2_block.R output were saved for rep1 for eg output1 for rep1 m output2 for rep2 likewise for original pipeline
+    df = pd.read_csv(file_name, header=None, sep=" ", index_col=False, names=columns)
+    df_list.append(df)
+
+combined_df = pd.concat(df_list, ignore_index=True)
+combined_df = combined_df.drop_duplicates(subset=["wave_1", "wave_2"], keep="first")
+combined_df.to_csv(f"{trait}_breakdown1.csv", index=False) # remeber to name the file and  the path to trait_ breakdown1 for downstream pipeline
+```
 ## Pre-processing 
 For this, you would need to get into the  compute node and an R session with R() in HPC and run the script below:
 ```
