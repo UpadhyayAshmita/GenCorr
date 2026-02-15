@@ -152,6 +152,24 @@ source("./scripts/h_replication_alltraits_preprocesstostage1/ps_allrep_stage1.R)
 source("./scripts/h_replication_alltraits_preprocesstostage1/pn_allrep_stage1.R)
 ```
 ## second stage model for replication 1-5 
+
+To fit the single-trait (ST) model for all four target traits in 5 different reps, you can submit the R script for each trait; below are the R scripts:
+```
+source(./scripts/singletrait_narea_secondstageallrep.R)
+source(./scripts/singletrait_sla_secondstageallrep.R)
+source(./scripts/singletrait_pn_secondstageallrep.R)
+source(./scripts/singletrait_ps_secondstageallrep.R)
+```
+You can call the R scripts above by calling the bash script from the shell dir 
+```
+source(./shell/singletrait_secondstageallrep.sh)
+sbatch shell/singletrait_secondstageallrep.sh <targettrait> <rep> #target trait= narea, ps, pn, sla & rep= 1,2,3,4,5 
+#sbatch shell/singletrait_secondstageallrep.sh narea 3  
+#sbatch shell/singletrait_secondstageallrep.sh sla 5
+#sbatch shell/singletrait_secondstageallrep.sh pn 2
+#sbatch shell/singletrait_secondstageallrep.sh ps 1
+```
+
 Now to fit teh second stage model for all four target trait and their 3 synthetic trait each for 5 reps in two scenarios efmw and mwef, you can submit the R script below using the bash script:
 ```
 source(./scripts/replication_secondstage/narea_combinedrep.R)
