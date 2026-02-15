@@ -45,9 +45,37 @@ source(./scripts/02_coh2_block_rep5.R)
 sbatch shell/coh2_block.sh  
 ```
 You can change the R script you call inside the shell script and run the complete model and replication dataset for the subset model; just change the trait name and R script path in the bash script
-You can get the coheritability breakdown dataset for the four target traits in complete and replicated scenarios by running the .py script from the compute node in HPC 
+You can get the coheritability breakdown dataset for the four target traits in complete and replicated scenarios by running the .py script from the compute node in HPC for complete model 
 ```
-source(./scripts/c_combine.py)
+source(./scripts/03_combine.py)
+# This file can be used to aggregate coheritability runs from multiple workers
+import pandas as pd
+
+trait = "sla"   # you can change the trait =  "narea", "sla", "pn", "ps" each time you run the script 
+
+columns = ["wave_1", "wave_2", "trait",
+           "coh2", "h2_trait", "h2_ratio",
+           "corg", "corgblup", "covs",
+           "varw", "vars", "vartrait"]
+
+workers = 50
+
+df_list = []
+for i in range(workers):
+    start = (i * 43) + 350
+    end   = ((i + 1) * 43) + 350
+
+    file_name = f"./output_complete/{trait}_{start}_{end}.csv"
+    df = pd.read_csv(file_name, header=None, sep=" ", index_col=False, names=columns)
+    df_list.append(df)
+
+combined_df = pd.concat(df_list, ignore_index=True)
+combined_df = combined_df.drop_duplicates(subset=["wave_1", "wave_2"], keep="first")
+combined_df.to_csv(f"{trait}_breakdown.csv", index=False)
+
+loaded_df = pd.read_csv(f"{trait}_breakdown.csv")
+print(loaded_df.head(10))
+
 ```
 ## Pre-processing 
 For this, you would need to get into the  compute node and an R session with R() in HPC and run the script below:
