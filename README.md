@@ -155,7 +155,7 @@ Here again, for the pre-processing step and selecting the synthetic trait with t
 ```
 ./scripts/08_lowcoh2_preprocessingalltrait.R
 ```
-Then, to fit the MT model with the lowest synthetic trait selected, you can submit the R script in the following R scripts using the below-mentioned bash scripts
+Then, to fit the MT model with the lowest synthetic trait selected, you can submit the R script in the following R scripts using the bash scripts mentioned below.
 ```
 source(./scripts/08_NT_efmw_lowcoh2.R)
 source(./scripts/08_ST_efmw_lowcoh2.R)
@@ -183,7 +183,7 @@ in the complete dataset model
 Again, all the graphs and plots in the result section were generated using the R script below, which you can run interactively in R() on the compute node
 
 ```
-./scripts/h_rerun_plot.R
+./scripts/09_plot.R
 ```
 
 ### Replication 1-5 
@@ -232,19 +232,19 @@ pspreprocessing_allrep(rep_id,
 There are 3 synthetic traits selected for 4 targets in each rep, and we also have a synthetic trait with the lowest coheritability ~0 selected for each target trait in each rep. 
 You can run the four scripts below to get the output/ Blues file for all the synthetic traits mentioned above :
 ```
-source("./scripts/h_replication_alltraits_preprocesstostage1/narea_allrep_stage1.R)
-source("./scripts/h_replication_alltraits_preprocesstostage1/sla_allrep_stage1.R)
-source("./scripts/h_replication_alltraits_preprocesstostage1/ps_allrep_stage1.R)
-source("./scripts/h_replication_alltraits_preprocesstostage1/pn_allrep_stage1.R)
+source("./scripts/10_narea_allrep_stage1.R)
+source("./scripts/10_sla_allrep_stage1.R)
+source("./scripts/10_ps_allrep_stage1.R)
+source("./scripts/10_pn_allrep_stage1.R)
 ```
 ## second stage model for replication 1-5 
 
 To fit the single-trait (ST) model for all four target traits in 5 different reps, you can submit the R script for each trait; below are the R scripts:
 ```
-source(./scripts/singletrait_narea_secondstageallrep.R)
-source(./scripts/singletrait_sla_secondstageallrep.R)
-source(./scripts/singletrait_pn_secondstageallrep.R)
-source(./scripts/singletrait_ps_secondstageallrep.R)
+source(./scripts/11_singletrait_narea_secondstageallrep.R)
+source(./scripts/11_singletrait_sla_secondstageallrep.R)
+source(./scripts/11_singletrait_pn_secondstageallrep.R)
+source(./scripts/11_singletrait_ps_secondstageallrep.R)
 ```
 You can call the R scripts above by calling the bash script from the shell dir 
 ```
@@ -258,10 +258,10 @@ sbatch shell/singletrait_secondstageallrep.sh <targettrait> <rep> #target trait=
 
 Now to fit teh second stage model for all four target trait and their 3 synthetic trait each for 5 reps in two scenarios efmw and mwef, you can submit the R script below using the bash script:
 ```
-source(./scripts/replication_secondstage/narea_combinedrep.R)
-source(./scripts/replication_secondstage/sla_combinedrep.R)
-source(./scripts/replication_secondstage/ps_combinedrep.R)
-source(./scripts/replication_secondstage/pn_combinedrep.R)
+source(./scripts/11_replication_secondstage/narea_combinedrep.R)
+source(./scripts/11_replication_secondstage/sla_combinedrep.R)
+source(./scripts/11_replication_secondstage/ps_combinedrep.R)
+source(./scripts/11_replication_secondstage/pn_combinedrep.R)
 
 ```
 You can submit the R script using a generic bash script for this step
