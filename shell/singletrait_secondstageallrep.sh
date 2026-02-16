@@ -16,7 +16,7 @@ module load R
 mkdir -p logs
 
 # Usage:
-#   sbatch singletrait_allreps.sh <trait> <rep_id>
+#   sbatch shell/singletrait_secondstageallrep.sh <trait> <rep_id>
 #
 # Examples:
 #   sbatch singletrait_allreps.sh narea 3
@@ -29,16 +29,16 @@ rep_id="${2:?Missing rep_id (1-5)}"
 
 case "${trait}" in
   narea)
-    rscript_path="./scripts/singletrait_narea_secondstageallrep.R"
+    rscript_path="./scripts/11_singletrait_narea_secondstageallrep.R"
     ;;
   sla)
-    rscript_path="./scripts/singletrait_sla_secondstageallrep.R"
+    rscript_path="./scripts/11_singletrait_sla_secondstageallrep.R"
     ;;
   pn)
-    rscript_path="./scripts/singletrait_pn_secondstageallrep.R"
+    rscript_path="./scripts/11_singletrait_pn_secondstageallrep.R"
     ;;
   ps)
-    rscript_path="./scripts/singletrait_ps_secondstageallrep.R"
+    rscript_path="./scripts/11_singletrait_ps_secondstageallrep.R"
     ;;
   *)
     echo "ERROR: Unknown trait '${trait}'. Use: ps | pn | narea | sla"

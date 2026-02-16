@@ -25,16 +25,16 @@ rep="${5:?Missing repetition}"
 
 case "${target}" in
   ps)
-    rscript_path="./scripts/replication_secondstage/ps_combinedrep.R"
+    rscript_path="./scripts/12_ps_combinedrep.R"
     ;;
   pn)
-    rscript_path="./scripts/replication_secondstage/pn_combinedrep.R"
+    rscript_path="./scripts/12_pn_combinedrep.R"
     ;;
   narea)
-    rscript_path="./scripts/replication_secondstage/narea_combinedrep.R"
+    rscript_path="./scripts/12_narea_combinedrep.R"
     ;;
   sla)
-    rscript_path="./scripts/replication_secondstage/sla_combinedrep.R"
+    rscript_path="./scripts/12_sla_combinedrep.R"
     ;;
   *)
     echo "ERROR: Unknown target '${target}'. Use: ps | pn | narea | sla"

@@ -37,3 +37,7 @@ Rscript scripts/07_narea_completemodel_efmw.R \
   --trait "${trait}" \
   --trait_index "${trait_index}" \
   --cv_scheme "${cv_scheme}"r
+# Rscript scripts/07_narea_completemodel_mwef.R \
+#   --trait "${trait}" \
+#   --trait_index "${trait_index}" \
+#   --cv_scheme "${cv_scheme}"r
