@@ -256,7 +256,7 @@ sbatch shell/singletrait_secondstageallrep.sh <targettrait> <rep> #target trait=
 #sbatch shell/singletrait_secondstageallrep.sh ps 1
 ```
 
-Now to fit teh second stage model for all four target trait and their 3 synthetic trait each for 5 reps in two scenarios efmw and mwef, you can submit the R script below using the bash script:
+Now to fit the second stage model for all four target trait and their 3 synthetic trait each for 5 reps in two scenarios efmw and mwef, you can submit the R script below using the bash script:
 ```
 source(./scripts/11_replication_secondstage/narea_combinedrep.R)
 source(./scripts/11_replication_secondstage/sla_combinedrep.R)
