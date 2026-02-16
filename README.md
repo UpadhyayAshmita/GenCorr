@@ -183,7 +183,7 @@ in the complete dataset model
 Again, all the graphs and plots in the result section were generated using the R script below, which you can run interactively in R() on the compute node
 
 ```
-./scripts/09_plot.R
+./scripts/09_rerun_plot.R
 ```
 
 ### Replication 1-5 
@@ -258,10 +258,10 @@ sbatch shell/singletrait_secondstageallrep.sh <targettrait> <rep> #target trait=
 
 Now to fit the second stage model for all four target trait and their 3 synthetic trait each for 5 reps in two scenarios efmw and mwef, you can submit the R script below using the bash script:
 ```
-source(./scripts/11_replication_secondstage/narea_combinedrep.R)
-source(./scripts/11_replication_secondstage/sla_combinedrep.R)
-source(./scripts/11_replication_secondstage/ps_combinedrep.R)
-source(./scripts/11_replication_secondstage/pn_combinedrep.R)
+source(./scripts/12_replication_secondstage/narea_combinedrep.R)
+source(./scripts/12_replication_secondstage/sla_combinedrep.R)
+source(./scripts/12_replication_secondstage/ps_combinedrep.R)
+source(./scripts/12_replication_secondstage/pn_combinedrep.R)
 
 ```
 You can submit the R script using a generic bash script for this step
