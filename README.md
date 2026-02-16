@@ -273,11 +273,24 @@ sbatch shell/secondstage_allrep.sh <target> <trait1> <trait2> <trait3> <rep>
 ```
 
 ### Multi-trait model with 2 synthetic traits together with the target trait
-To run the Multi-trait model for each target trait that is added with the two synthetic traits selected above for the  complete model, you can run using R scripts below:
+To run the Multi-trait model for each target trait that is added with the two synthetic traits selected above for the  complete model, you can run using the R scripts below:
 ```
 source(./scripts/13_mt_narea_3traits.R)
 source(./scripts/13_mt_sla_3traits.R)
 source(./scripts/13_mt_pn_3traits.R)
 source(./scripts/13_mt_ps_3traits.R)
 ```
-
+You can submit the four trait MT model R scripts by using the bash script below:
+```
+sbatch ./shell/mt_narea_3trait.sh # remember to change your Wave1 and Wave2 based on the selected synthetic trait wave ratio for the target trait
+sbatch ./shell/mt_sla_3trait.sh
+sbatch ./shell/mt_pn_3trait.sh
+sbatch ./shell/mt_ps_3trait.sh
+```
+Also, the reverse scenario i.e mwef for the above model, can also be submitted using the R script below, while you can reuse the same bash script above by uncommenting the part where it calls mwef. R file 
+```
+source(./scripts/13_mt_narea_3traits_mwef.R)
+source(./scripts/13_mt_sla_3traits_mwef.R)
+source(./scripts/13_mt_pn_3traits_mwef.R)
+source(./scripts/13_mt_ps_3traits_mwef.R)
+```
