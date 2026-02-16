@@ -271,3 +271,13 @@ source(./shell/secondstage_allrep.sh)
 sbatch shell/secondstage_allrep.sh <target> <trait1> <trait2> <trait3> <rep> 
 #eg: target= ps, pn, narea, sla & trait1=wave_1715_wave_1691, trait2= wave_728_wave_1071, trait3=wave_2335_wave_1446 & rep=3
 ```
+
+### Multi-trait model with 2 synthetic traits together with the target trait
+To run the Multi-trait model for each target trait that is added with the two synthetic traits selected above for the  complete model, you can run using R scripts below:
+```
+source(./scripts/13_mt_narea_3traits.R)
+source(./scripts/13_mt_sla_3traits.R)
+source(./scripts/13_mt_pn_3traits.R)
+source(./scripts/13_mt_ps_3traits.R)
+```
+
