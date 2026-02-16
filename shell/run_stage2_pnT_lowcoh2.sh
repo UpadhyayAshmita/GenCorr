@@ -24,5 +24,7 @@ module list
 
 # This R script runs BOTH CV1 and CV2 and writes:
 # NT_CV1.csv, acNT_CV1.csv, NT_CV2.csv, acNT_CV2.csv
-Rscript scripts/lowest_coh2/g_pnT_mwef_lowcoh2.R \
+Rscript scripts/08_pnT_efmw_lowcoh2.R \
   --wave_col "${wave_col}"
+# Rscript scripts/08_pnT_mwef_lowcoh2.R \
+#   --wave_col "${wave_col}"
