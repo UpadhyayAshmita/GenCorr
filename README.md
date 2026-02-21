@@ -278,10 +278,11 @@ To run the Multi-trait model for each target trait that is added with the two sy
 source(./scripts/13_mt_alltrait_parallel.R)
 source(./scripts/13_mt_alltrait_MWEF_parallel.R)
 ```
-You can submit the four trait MT model R scripts by using the bash script below:
+You can submit the four target trait MT model R scripts by using the bash script below:
 ```
-sbatch ./shell/mt_narea_3trait.sh # remember to change your Wave1 and Wave2 based on the selected synthetic trait wave ratio for the target trait
-sbatch ./shell/mt_sla_3trait.sh
-sbatch ./shell/mt_pn_3trait.sh
-sbatch ./shell/mt_ps_3trait.sh
+source(./shell/mt_narea_parallel.sh) #remember to change the ratio as per the selected ratio in blues file
+source(./shell/mt_sla_parallel.sh)
+source(./shell/mt_ps_parallel.sh)
+source(./shell/mt_pn_parallel.sh)
+sbatch shell/mt_narea_parallel.sh CV1 
 ```
