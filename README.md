@@ -284,5 +284,5 @@ source(./shell/mt_narea_parallel.sh) #remember to change the ratio as per the se
 source(./shell/mt_sla_parallel.sh)
 source(./shell/mt_ps_parallel.sh)
 source(./shell/mt_pn_parallel.sh)
-sbatch shell/mt_narea_parallel.sh CV1 
+sbatch shell/mt_narea_parallel.sh CV1 #you can choose CV1 or CV2 from sbatch but automatically CV1 will run if you dont specify
 ```
