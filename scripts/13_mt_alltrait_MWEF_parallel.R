@@ -26,7 +26,7 @@ asreml.options(workspace = "4gb", pworkspace = "2gb", maxit = 50)
 
 # Create unique folders based on the trait and scheme
 tmp_dir <- file.path(".", paste0("TMP_", trait_name, "_MWEF_", cv_scheme))
-out_dir <- file.path("./output", trait_name) # Group outputs by trait
+out_dir <- file.path("./output")
 
 if(!dir.exists(tmp_dir)) dir.create(tmp_dir, recursive = TRUE)
 if(!dir.exists(out_dir)) dir.create(out_dir, recursive = TRUE)

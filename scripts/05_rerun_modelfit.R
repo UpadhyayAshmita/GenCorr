@@ -18,6 +18,7 @@ asreml.options(workspace = "800mb",
 kin <- fread("./data/kinship_additive.txt", data.table = FALSE)
 rownames(kin) <- colnames(kin)
 kin <- as.matrix(kin)
+dim(kin)
 # load phenotypes
 wave <- fread("./data/phenotypes_whole.csv", data.table = FALSE) %>% clean_names()
 # common IDs
@@ -25,16 +26,17 @@ common_ids <- intersect(rownames(kin), unique(wave$taxa))
 # filter both
 kin  <- kin[common_ids, common_ids, drop = FALSE]
 wave <- wave[wave$taxa %in% common_ids, ]
-# save filtered phenotypes (cleanly)
-write.csv(wave, "./data/phenotypes_whole_filtered.csv", row.names = FALSE)
-# tune + invert filtered kinship
-Gb   <- G.tuneup(G = kin, bend = TRUE, eig.tol = 1e-06)$Gb
+# kin already loaded + filtered
+Gb <- G.tuneup(G = kin, bend = TRUE, eig.tol = 1e-06)$Gb
 GINV <- G.inverse(G = Gb, sparseform = TRUE)
-# saveRDS(kin,  "./data/kin_common_ids.rds")
-# saveRDS(Gb,   "./data/Gb_common_ids.rds")
-# saveRDS(GINV, "./data/GINV_common_ids.rds")
-# write.table(common_ids, "./data/common_ids.txt", row.names=FALSE, col.names="taxa", quote=FALSE)
+GINV_mat <- G.inverse(G = Gb, sparseform = FALSE)
+Ginv_matrix <- GINV_mat$Ginv
+dim(Ginv_matrix)
+saveRDS(Ginv_matrix, "./data/GINV.rds")
+dim(GINV)
 
+
+#run teh BLUEs of trait and wave
 Nwave_pheno <- read.csv("./output/Nwave_pheno.csv")
 # ---------------------processing of data---------------------
 Nwave_pheno<-
