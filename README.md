@@ -280,7 +280,7 @@ source(./scripts/13_mt_alltrait_MWEF_parallel.R)
 ```
 You can submit the four target trait MT model R scripts by using the bash script below:
 ```
-source(./shell/mt_narea_parallel.sh) #remember to change the ratio as per the selected ratio in blues file
+source(./shell/mt_narea_parallel.sh) #remember to change the ratio as per the selected ratio in blue's file
 source(./shell/mt_sla_parallel.sh)
 source(./shell/mt_ps_parallel.sh)
 source(./shell/mt_pn_parallel.sh)
